@@ -1,12 +1,73 @@
-{% extends 'home/base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
+{% block title %} Droppit - Wishlist {{ setting.title }} {% endblock %}
 
-    {% block header %} {% include 'home/header.html' %} {% endblock %}
-    {% block this_page %} Wish list {% endblock this_page %}
-    {% block current_page %} Wish list {% endblock current_page %}
+{% block header%} {% include 'base/header.html' %} {% endblock %}
+
+{% block this_page %}Wishlist{% endblock %}
+{% block current_page %}Wishlist{% endblock  %}
+
 
     {% block content %}
-
+         <!-- ...:::: Start Wishlist Section:::... -->
+    <div class="wishlist-section">
+        <!-- Start Cart Table -->
+        <div class="wishlish-table-wrapper"  data-aos="fade-up"  data-aos-delay="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <!-- Start Wishlist Table Head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Delete</th>
+                                            <th class="product_thumb">Image</th>
+                                            <th class="product_name">Product</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product_stock">Stock Status</th>
+                                            <th class="product_addcart">Add To Cart</th>
+                                        </tr>
+                                    </thead> <!-- End Cart Table Head -->
+                                    <tbody>
+                                        <!-- Start Wishlist Single Item-->
+                                        <tr>
+                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                            <td class="product_thumb"><a href="{% url 'product_detail' %}"><img src="{% static '' %}./images/products_images/aments_products_image_1.jpg" alt=""></a></td>
+                                            <td class="product_name"><a href="{% url 'product_detail' %}">Handbag fringilla</a></td>
+                                            <td class="product-price">$65.00</td>
+                                            <td class="product_stock">In Stock</td>
+                                            <td class="product_addcart"><a href="#" data-toggle="modal" data-target="#modalAddcart">Add To Cart</a></td>
+                                        </tr> <!-- End Wishlist Single Item-->
+                                        <!-- Start Wishlist Single Item-->
+                                        <tr>
+                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                            <td class="product_thumb"><a href="{% url 'product_detail' %}"><img src="{% static '' %}./images/products_images/aments_products_image_2.jpg" alt=""></a></td>
+                                            <td class="product_name"><a href="{% url 'product_detail' %}">Handbags justo</a></td>
+                                            <td class="product-price">$90.00</td>
+                                            <td class="product_stock">In Stock</td>
+                                            <td class="product_addcart"><a href="#" data-toggle="modal" data-target="#modalAddcart">Add To Cart</a></td>
+                                        </tr> <!-- End Wishlist Single Item-->
+                                        <!-- Start Wishlist Single Item-->
+                                        <tr>
+                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                            <td class="product_thumb"><a href="{% url 'product_detail' %}"><img src="{% static '' %}./images/products_images/aments_products_image_3.jpg" alt=""></a></td>
+                                            <td class="product_name"><a href="{% url 'product_detail' %}">Handbag elit</a></td>
+                                            <td class="product-price">$80.00</td>
+                                            <td class="product_stock">In Stock</td>
+                                            <td class="product_addcart"><a href="#" data-toggle="modal" data-target="#modalAddcart">Add To Cart</a></td>
+                                        </tr> <!-- End Wishlist Single Item-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Cart Table -->
+    </div> <!-- ...:::: End Wishlist Section:::... -->
     {% endblock %}
 
-    {% block footer %} {% include 'home/foot.html' %} {% endblock %}
+
+{% block footer %} {% include 'base/foot.html' %} {% endblock %}

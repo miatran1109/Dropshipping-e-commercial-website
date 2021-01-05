@@ -1,13 +1,97 @@
-{% extends 'home/base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
+{% block title %} Droppit - About Us {{ setting.title }} {% endblock %}
 
-    {% block header %} {% include 'home/header.html' %} {% endblock %}
-    {% block this_page %} About us {% endblock this_page %}
-    {% block current_page %} About us {% endblock current_page %}
+{% block header%} {% include 'base/header.html' %} {% endblock %}
 
-    {% block content %}
+{% block this_page %}About us{% endblock %}
+{% block current_page %}About us{% endblock  %}
 
-    {% endblock %}
+{% block content %}
 
+	<!-- ...::::Start About Us Top Section:::... -->
+    <div class="about-us-top-area section-top-gap-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="about-us-top-img" data-aos="fade-up"  data-aos-delay="0">
+                        <img class="img-fluid" src="{% static './images/about/about.jpg' %}" alt="">
+                    </div>
+                    <div class="about-us-top-content text-center" data-aos="fade-up"  data-aos-delay="200">
+                        <h4>Welcome To Droppit!</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End About Us Top Section:::... -->
 
-    {% block footer %} {% include 'home/foot.html' %} {% endblock %}
+    <!-- ...::::Start About Us Center Section:::... -->
+    <div class="about-us-center-area section-top-gap-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="about-us-center-content text-center">
+                        <h4 data-aos="fade-up"  data-aos-delay="0">Why Chose Us?</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <!-- Start About Promo Single Item -->
+                    <div class="about-promo-single-item" data-aos="fade-up"  data-aos-delay="0">
+                        <img src="{% static './images/icon/about-icon-1.jpg' %}" alt="">
+                        <h6>Cheap cheap cheap</h6>
+                    </div> <!-- End About Promo Single Item -->
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <!-- Start About Promo Single Item -->
+                    <div class="about-promo-single-item" data-aos="fade-up"  data-aos-delay="200">
+                        <img src="{% static './images/icon/about-icon-2.jpg' %}" alt="">
+                        <h6>100% Money Back Guarantee</h6>
+                    </div> <!-- End About Promo Single Item -->
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <!-- Start About Promo Single Item -->
+                    <div class="about-promo-single-item" data-aos="fade-up"  data-aos-delay="400">
+                        <img src="{% static './images/icon/about-icon-3.jpg' %}" alt="">
+                        <h6>Online Support 24/7</h6>
+                    </div> <!-- End About Promo Single Item -->
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...::::End  About Us Center Section -->
+
+    <!-- ...::::Start About Us Center Section:::... -->
+    <div class="about-us-bottom-area section-top-gap-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <!-- Start About Promo Single Item -->
+                    <div class="about-feature-single-item" data-aos="fade-up"  data-aos-delay="0">
+                        <img class="img-fluid" src="{% static './images/about/about-feature-1.jpg' %}" alt="">
+                        <h6>What Do We Do?</h6>
+                        <p>Just try to pass this project on time.</p>
+                    </div> <!-- End About Promo Single Item -->
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <!-- Start About Promo Single Item -->
+                    <div class="about-feature-single-item" data-aos="fade-up"  data-aos-delay="200">
+                        <img class="img-fluid" src="{% static './images/about/about-feature-2.jpg' %}" alt="">
+                        <h6>Our Mission</h6>
+                        <p>Provide cheap but quality pproducts for our customers.</p>
+                    </div> <!-- End About Promo Single Item -->
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <!-- Start About Promo Single Item -->
+                    <div class="about-feature-single-item" data-aos="fade-up"  data-aos-delay="400">
+                        <img class="img-fluid" src="{% static './images/about/about-feature-3.jpg' %}" alt="">
+                        <h6>History Of Us</h6>
+                        <p>We just open it.</p>
+                    </div> <!-- End About Promo Single Item -->
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...::::End  About Us Center Section:::... -->
+{% endblock %}
+
+{% block footer %} {% include 'base/foot.html' %} {% endblock %}

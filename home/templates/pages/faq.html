@@ -1,13 +1,55 @@
-{% extends 'home/base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
+{% block title %} Droppit - FAQ {{ setting.title }} {% endblock %}
 
-    {% block header %} {% include 'home/header.html' %} {% endblock %}
-    {% block this_page %} FAQ {% endblock this_page %}
-    {% block current_page %} FAQ {% endblock current_page %}
+{% block header%} {% include 'base/header.html' %} {% endblock %}
+
+{% block this_page %}FAQ{% endblock %}
+{% block current_page %}FAQ{% endblock  %}
+
 
     {% block content %}
-
+        <div class="faq-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="faq-content" data-aos="fade-up"  data-aos-delay="0">
+                        <h5>Below are frequently asked questions, you may find the answer for yourself</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-wrapper">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="faq-accordian">
+                            <div class="faq-accordian-single-item" data-aos="fade-up"  data-aos-delay="0">
+                                <input id="item-1" name="accordian-item" type="radio" checked="">
+                                <label for="item-1">Q. Example of a question</label>
+                                <div class="item-content">
+                                    <p>Example answer.</p>
+                                </div>
+                            </div>
+                            <div class="faq-accordian-single-item" data-aos="fade-up"  data-aos-delay="0">
+                                <input id="item-2" name="accordian-item" type="radio" checked="">
+                                <label for="item-2">Q. Example of a question</label>
+                                <div class="item-content">
+                                    <p>Example answer.</p>
+                                </div>
+                            </div>
+                            <div class="faq-accordian-single-item" data-aos="fade-up"  data-aos-delay="0">
+                                <input id="item-3" name="accordian-item" type="radio" checked="">
+                                <label for="item-3">Q. Example of a question</label>
+                                <div class="item-content">
+                                    <p>Example answer.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...::::End  About Us Center Section:::... -->
     {% endblock %}
 
 
-    {% block footer %} {% include 'home/foot.html' %} {% endblock %}
+{% block footer %} {% include 'base/foot.html' %} {% endblock %}

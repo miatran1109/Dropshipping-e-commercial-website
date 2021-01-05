@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 def home(request):
     context = {}
-    return render(request, 'home/home.html', context)
+    return render(request, 'pages/home.html', context)
 
 
 def cart(request):
@@ -64,11 +64,11 @@ def product_detail(request):
     return render(request, 'pages/product_detail.html', context)
 
 
-def blog(request):
-    context = {}
-    return render(request, 'pages/blog.html', context)
-
-
 def compare(request):
     context = {}
     return render(request, 'pages/compare.html', context)
+
+
+def login(request):
+    context = {}
+    return render(request, 'pages/login.html', context)

@@ -1,13 +1,79 @@
-{% extends 'home/base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
+{% block title %} Droppit - Service {{ setting.title }} {% endblock %}
 
-    {% block header %} {% include 'home/header.html' %} {% endblock %}
-    {% block this_page %} Service {% endblock this_page %}
-    {% block current_page %} Service {% endblock current_page %}
+{% block header%} {% include 'base/header.html' %} {% endblock %}
+
+{% block this_page %}Service{% endblock %}
+{% block current_page %}Service{% endblock  %}
+
 
     {% block content %}
+        <!-- ...::::Start Service Price Section:::... -->
+    <div class="price-section section-top-gap-100 ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <!-- Start Price Single Item -->
+                    <div class="price-single-item" data-aos="fade-up"  data-aos-delay="0">
+                        <div class="price-content">
+                            <h6 class="price-title">FREE SHIP</h6>
+                            <h3 class="price-value">£19<span>/MONTH</span></h3>
+                        </div>
+                        <ul class="price-detail">
+                            <li>For all bill greater than 50$</li>
+                            <li>All over the world</li>
+                            <li><a class="price-btn" href="">PURCHASE NOW</a></li>
+                        </ul>
+                    </div> <!-- End Price Single Item -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <!-- Start Price Single Item -->
+                    <div class="price-single-item" data-aos="fade-up"  data-aos-delay="200">
+                       <div class="price-content">
+                            <h6 class="price-title">FREE SHIP</h6>
+                            <h3 class="price-value">£39<span>/MONTH</span></h3>
+                        </div>
+                        <ul class="price-detail">
+                            <li>For all bill greater than 20$</li>
+                            <li>All over the world</li>
+                            <li><a class="price-btn" href="">PURCHASE NOW</a></li>
+                        </ul>
+                    </div> <!-- End Price Single Item -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <!-- Start Price Single Item -->
+                    <div class="price-single-item" data-aos="fade-up"  data-aos-delay="400">
+                       <div class="price-content">
+                            <h6 class="price-title">FREE SHIP</h6>
+                            <h3 class="price-value">£59<span>/MONTH</span></h3>
+                        </div>
+                        <ul class="price-detail">
+                            <li>For all bill greater than 10$</li>
+                            <li>All over the world</li>
+                            <li><a class="price-btn" href="">PURCHASE NOW</a></li>
+                        </ul>
+                    </div> <!-- End Price Single Item -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <!-- Start Price Single Item -->
+                    <div class="price-single-item" data-aos="fade-up"  data-aos-delay="600">
+                        <div class="price-content">
+                            <h6 class="price-title">FREE SHIP</h6>
+                            <h3 class="price-value">£69<span>/MONTH</span></h3>
+                        </div>
+                        <ul class="price-detail">
+                            <li>For all bill</li>
+                            <li>All over the world</li>
+                            <li><a class="price-btn" href="">PURCHASE NOW</a></li>
+                        </ul>
+                    </div> <!-- End Price Single Item -->
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...:::: End Service Price Section:::... -->
 
     {% endblock %}
 
 
-    {% block footer %} {% include 'home/foot.html' %} {% endblock %}
+{% block footer %} {% include 'base/foot.html' %} {% endblock %}

@@ -1,14 +1,103 @@
-{% extends 'home/base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
+{% block title %} Droppit - My cart {{ setting.title }} {% endblock %}
 
-    {% block header %} {% include 'home/header.html' %} {% endblock %}
-    {% block banner %} {% include 'home/banner.html' %} {% endblock %}
-    {% block this_page %} Cart {% endblock this_page %}
-    {% block current_page %} Cart {% endblock current_page %}
+{% block header%} {% include 'base/header.html' %} {% endblock %}
+
+{% block this_page %}Cart{% endblock %}
+{% block current_page %}Cart{% endblock  %}
+
 
     {% block content %}
+        <!-- ...:::: Start Cart Section:::... -->
+    <div class="cart-section">
+        <!-- Start Cart Table -->
+        <div class="cart-table-wrapper"  data-aos="fade-up"  data-aos-delay="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <!-- Start Cart Table Head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Delete</th>
+                                            <th class="product_thumb">Image</th>
+                                            <th class="product_name">Product</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product_quantity">Quantity</th>
+                                            <th class="product_total">Total</th>
+                                        </tr>
+                                    </thead> <!-- End Cart Table Head -->
+                                    <tbody>
+                                        <!-- Start Cart Single Item-->
+                                        <tr>
+                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                            <td class="product_thumb"><a href="{% url 'product_detail' %}"><img src="{% static 'images/products_images/aments_products_image_1.jpg' %}" alt=""></a></td>
+                                            <td class="product_name"><a href="{% url 'product_detail' %}">Tee</a></td>
+                                            <td class="product-price">$65.00</td>
+                                            <td class="product_quantity"><label>Quantity</label> <input min="1" max="100" value="1" type="number"></td>
+                                            <td class="product_total">$65.00</td>
+                                        </tr> <!-- End Cart Single Item-->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cart_submit">
+                                <button type="submit">update cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Cart Table -->
+
+        <!-- Start Coupon Start -->
+        <div class="coupon_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code left"  data-aos="fade-up"  data-aos-delay="200">
+                            <h3>Coupon</h3>
+                            <div class="coupon_inner">
+                                <p>Enter your coupon code if you have one.</p>
+                                <input placeholder="Coupon code" type="text">
+                                <button type="submit">Apply coupon</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code right"  data-aos="fade-up"  data-aos-delay="400">
+                            <h3>Cart Totals</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Subtotal</p>
+                                    <p class="cart_amount">$</p>
+                                </div>
+                                <div class="cart_subtotal ">
+                                    <p>Shipping</p>
+                                    <p class="cart_amount"><span>Flat Rate:</span> $</p>
+                                </div>
+                                <a href="#">Calculate shipping</a>
+
+                                <div class="cart_subtotal">
+                                    <p>Total</p>
+                                    <p class="cart_amount">$</p>
+                                </div>
+                                <div class="checkout_btn">
+                                    <a href="#">Proceed to Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Coupon Start -->
+
+    </div> <!-- ...:::: End Cart Section:::... -->
+
 
     {% endblock %}
 
 
-    {% block footer %} {% include 'home/foot.html' %} {% endblock %}
+{% block footer %} {% include 'base/foot.html' %} {% endblock %}

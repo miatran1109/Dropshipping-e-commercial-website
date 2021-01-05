@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+{% load static %}
+    {% block title %} Droppit - Login {{ setting.title }} {% endblock %}
+    {% block header %} {% include 'base/header.html' %} {% endblock %}
+    {% block this_page %} Login {% endblock this_page %}
+    {% block current_page %} Login {% endblock current_page %}
+
+    {% block content %}
+
+         <!-- ...:::: Start Customer Login Section :::... -->
+    <div class="customer_login">
+        <div class="container">
+            <div class="row">
+                <!--login area start-->
+                <div class="col-lg-6 col-md-6">
+                    <div class="account_form" data-aos="fade-up"  data-aos-delay="0">
+                        <h3>login</h3>
+                        <form action="#" method="POST">
+                            <div class="default-form-box mb-20">
+                                <label>Username or email <span>*</span></label>
+                                <label>
+                                    <input type="text">
+                                </label>
+                            </div>
+                            <div class="default-form-box mb-20">
+                                <label>Passwords <span>*</span></label>
+                                <label>
+                                    <input type="password">
+                                </label>
+                            </div>
+                            <div class="login_submit">
+                                <button class="mb-20" type="submit">login</button>
+                                <label class="checkbox-default mb-20" for="offer">
+                                    <input type="checkbox" id="offer">
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="#">Lost your password?</a>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--login area start-->
+
+                <!--register area start-->
+                <div class="col-lg-6 col-md-6">
+                    <div class="account_form register" data-aos="fade-up"  data-aos-delay="200">
+                        <h3>Register</h3>
+                        <form action="#">
+                            <div class="default-form-box mb-20">
+                                <label>Email address <span>*</span></label>
+                                <label>
+                                    <input type="text">
+                                </label>
+                            </div>
+                            <div class="default-form-box mb-20">
+                                <label>Passwords <span>*</span></label>
+                                <label>
+                                    <input type="password">
+                                </label>
+                            </div>
+                            <div class="login_submit">
+                                <button type="submit">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--register area end-->
+            </div>
+        </div>
+    </div> <!-- ...:::: End Customer Login Section :::... -->
+
+
+
+
+    {% endblock %}
+
+
+    {% block footer %} {% include 'base/foot.html' %} {% endblock %}

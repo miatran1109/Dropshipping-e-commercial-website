@@ -1,4 +1,5 @@
 {% load static %}
+ <!-- ...:::: Start Header Section:::... -->
 <header class="header-section d-lg-block d-none">
         <!-- Start Header Top Area -->
         <div class="header-top">
@@ -72,7 +73,7 @@
                         <!-- Start Header Action Icon -->
                         <ul class="header-action-icon">
                             <li>
-                                <a href="#offcanvas-wishlist" class="offcanvas-toggle">
+                                <a href="#offcanvas-wishlish" class="offcanvas-toggle">
                                     <i class="icon-heart"></i>
                                     <span class="header-action-icon-item-count">3</span>
                                 </a>
@@ -106,9 +107,6 @@
                                         <a href="{% url 'product_list' %} ">Shop</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'blog' %}">Blog </a>
-                                    </li>
-                                    <li>
                                         <a href="{% url 'about_us' %}">About Us</a>
                                     </li>
                                     <li>
@@ -120,7 +118,7 @@
                                         <ul class="sub-menu">
                                             <li><a href="{% url 'service' %}">Service</a></li>
                                             <li><a href="{% url 'faq' %}">Frequently Questions</a></li>
-                                            <li><a href="{% url 'policy' %}">Privacy Policy</a></li>
+{#                                            <li><a href="{% url 'policy' %}">Privacy Policy</a></li>#}
                                         </ul>
                                     </li>
                                 </ul>
@@ -213,19 +211,19 @@
                     </div>
                     <div class="mobile-menu-customer-support-text">
                         <span>Customer Support</span>
-                        <a class="mobile-menu-customer-support-text-phone" href="tel: ">Phone number</a>
+                        <a class="mobile-menu-customer-support-text-phone" href="tel: 012 345 678">012 345 678</a>
                     </div>
                 </div>
                 <!-- Start Header Action Icon -->
                 <ul class="mobile-action-icon">
                     <li class="mobile-action-icon-item">
-                        <a href="wishlist.html" class="mobile-action-icon-link">
+                        <a href="{% url 'wishlist' %}" class="mobile-action-icon-link">
                             <i class="icon-heart"></i>
                             <span class="mobile-action-icon-item-count">3</span>
                         </a>
                     </li>
                     <li class="mobile-action-icon-item">
-                        <a href="../pages/cart.html" class="mobile-action-icon-link">
+                        <a href="{% url 'cart' %}" class="mobile-action-icon-link">
                             <i class="icon-shopping-cart"></i>
                             <span class="mobile-action-icon-item-count">3</span>
                         </a>
@@ -242,9 +240,6 @@
                         </li>
                         <li>
                             <a href="#"><span>Shop</span></a>
-                        </li>
-                        <li>
-                            <a href="#"><span>Blogs</span></a>
                         </li>
                         <li><a href="{% url 'about_us' %}">About Us</a></li>
                         <li><a href="{% url 'contact' %}">Contact Us</a></li>
@@ -364,47 +359,14 @@
                 <li class="offcanvas-wishlist-item-single">
                     <div class="offcanvas-wishlist-item-block">
                         <a href="" class="offcanvas-wishlist-item-image-link">
-                            <img src="{% static 'images/products_images/aments_products_image_6.jpg' %}" alt="" class="offcanvas-wishlist-image">
+                            {% load static %}
+                            <img src="{% static './images/products_images/aments_products_image_6.jpg' %}" alt="" class="offcanvas-wishlist-image">
                         </a>
                         <div class="offcanvas-wishlist-item-content">
-                            <a href="" class="offcanvas-wishlist-item-link">Car Wheel</a>
+                            <a href="" class="offcanvas-wishlist-item-link">Lux tee</a>
                             <div class="offcanvas-wishlist-item-details">
                                 <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
                                 <span class="offcanvas-wishlist-item-details-price">$49.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="offcanvas-wishlist-item-delete text-right">
-                        <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                    </div>
-                </li>
-                <li class="offcanvas-wishlist-item-single">
-                    <div class="offcanvas-wishlist-item-block">
-                        <a href="" class="offcanvas-wishlist-item-image-link">
-                            <img src="{% static 'images/categories_images/aments_categories_08.jpg' %}" alt="" class="offcanvas-wishlist-image">
-                        </a>
-                        <div class="offcanvas-wishlist-item-content">
-                            <a href="" class="offcanvas-wishlist-item-link">Car Vails</a>
-                            <div class="offcanvas-wishlist-item-details">
-                                <span class="offcanvas-wishlist-item-details-quantity">3 x </span>
-                                <span class="offcanvas-wishlist-item-details-price">$500.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="offcanvas-wishlist-item-delete text-right">
-                        <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                    </div>
-                </li>
-                <li class="offcanvas-wishlist-item-single">
-                    <div class="offcanvas-wishlist-item-block">
-                        <a href="" class="offcanvas-wishlist-item-image-link">
-                            <img src="{% static 'images/products_images/aments_products_image_2.jpg' %}" alt="" class="offcanvas-wishlist-image">
-                        </a>
-                        <div class="offcanvas-wishlist-item-content">
-                            <a href="" class="offcanvas-wishlist-item-link">Shock Absorber</a>
-                            <div class="offcanvas-wishlist-item-details">
-                                <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
-                                <span class="offcanvas-wishlist-item-details-price">$350.00</span>
                             </div>
                         </div>
                     </div>

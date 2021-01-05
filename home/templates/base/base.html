@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} Droppit {% endblock %}</title>
+
+    <!-- ::::::::::::::Favicon icon::::::::::::::-->
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/png">
+
+
+    <!-- ::::::::::::::All CSS Files here :::::::::::::: -->
+    <!-- Vendor CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static './css/vendor/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static './css/vendor/plaza-icon.css' %}">
+    <link rel="stylesheet" href="{% static './css/vendor/jquery-ui.min.css' %}">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="{% static './css/plugins/slick.css' %}">
+    <link rel="stylesheet" href="{% static './css/plugins/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static './css/plugins/aos.min.css' %}">
+    <link rel="stylesheet" href="{% static './css/plugins/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static './css/plugins/venobox.min.css' %}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static './css/style.css' %}">
+
+    <!-- Use the minified version files listed below for better performance and remove the files listed above -->
+    <!-- <link rel="stylesheet" href="./css/vendor/vendor.min.css">
+    <link rel="stylesheet" href="./css/plugins/plugins.min.css">
+    <link rel="stylesheet" href="./css/style.min.css"> -->
+
+
+
+</head>
+
+<body>
+
+    {% block header %}{% endblock %}
+    {% block banner %}{% endblock %}
+
+    <div class="breadcrumb-section">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-between justify-content-md-between  align-items-center flex-md-row flex-column">
+                        <h3 class="breadcrumb-title">{% block this_page %}{% endblock this_page %}</h3>
+                        <div class="breadcrumb-nav">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li class="active" aria-current="page">{% block current_page %}{% endblock current_page %}</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+
+</body>
+
+</html>
