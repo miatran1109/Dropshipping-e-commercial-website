@@ -1,8 +1,3 @@
----
-
-
----
-
 <h1 id="dropshipping-ecomercial">Dropshipping Ecomercial</h1>
 <p>This is our repo for group project. In this project, we tend to create a e-commercial website. We currently using django framework and postgresql for database management.</p>
 <h2 id="install-django-and-open">Install django and open</h2>
