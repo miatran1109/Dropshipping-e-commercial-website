@@ -32,14 +32,16 @@
                                     </thead> <!-- End Cart Table Head -->
                                     <tbody>
                                         <!-- Start Cart Single Item-->
+                                        {% for item in items %}
                                         <tr>
                                             <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                            <td class="product_thumb"><a href="{% url 'product_detail' %}"><img src="{% static 'images/products_images/aments_products_image_1.jpg' %}" alt=""></a></td>
-                                            <td class="product_name"><a href="{% url 'product_detail' %}">Tee</a></td>
-                                            <td class="product-price">$65.00</td>
-                                            <td class="product_quantity"><label>Quantity</label> <input min="1" max="100" value="1" type="number"></td>
-                                            <td class="product_total">$65.00</td>
+                                            <td class="product_thumb"><a href="{% url 'product_detail' %}"><img src="{{ item.product.image_url }}" alt=""></a></td>
+                                            <td class="product_name"><a href="{% url 'product_detail' %}">{{ item.product.name }}</a></td>
+                                            <td class="product-price">${{ item.product.price|floatformat:2 }}</td>
+                                            <td class="product_quantity"><label>Quantity</label><input min="1" max="100" value="{{ item.amount }}" type="number"></td>
+                                            <td class="product_total">${{ item.total_price|floatformat:2 }}</td>
                                         </tr> <!-- End Cart Single Item-->
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -84,7 +86,7 @@
                                     <p>Total</p>
                                     <p class="cart_amount">$</p>
                                 </div>
-                                <div class="checkout_btn">
+                                <div class="checkout_btn">s
                                     <a href="#">Proceed to Checkout</a>
                                 </div>
                             </div>
