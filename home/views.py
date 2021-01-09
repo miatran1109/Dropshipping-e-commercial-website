@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from .models import *
 # Create your views here.
 from django.http import HttpResponse
 
@@ -55,18 +55,14 @@ def policy(request):
 
 
 def product_list(request):
-    context = {}
+    products = Product.objects.all()
+    context = {'products': products}
     return render(request, 'pages/product_list.html', context)
 
 
 def product_detail(request):
     context = {}
     return render(request, 'pages/product_detail.html', context)
-
-
-def compare(request):
-    context = {}
-    return render(request, 'pages/compare.html', context)
 
 
 def login(request):
