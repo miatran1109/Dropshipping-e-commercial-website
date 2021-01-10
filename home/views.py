@@ -8,7 +8,8 @@ from product.models import *
 
 def home(request):
     sliders = Product.objects.all().order_by('-id')[:4]
-    context = {'sliders': sliders}
+    latest = Product.objects.all().order_by('-id')[:16]
+    context = {'sliders': sliders, 'latest': latest}
     return render(request, 'pages/home.html', context)
 
 
@@ -71,8 +72,14 @@ def product_list(request):
     return render(request, 'pages/product_list.html', context)
 
 
-def product_detail(request):
-    context = {}
+def product_detail(request,id,slug):
+    category = Category.objects.all()
+    product = Product.objects.get(pk=id)
+    images = Images.objects.filter(product_id=id)
+    comments = Comment.objects.filter(product_id=id)
+    context = {'product': product, 'category': category,
+               'images': images, 'comments': comments,
+               }
     return render(request, 'pages/product_detail.html', context)
 
 

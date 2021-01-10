@@ -28,7 +28,7 @@
                                                     <!-- Start Product Default Single -->
                                                     <div class="product-default-single border-around" data-aos="fade-up"  data-aos-delay="0">
                                                         <div class="product-img-warp">
-                                                            <a href="{% url 'product_detail' %}" class="product-default-img-link">
+                                                            <a href="{% url 'product_detail' product.id product.slug %}" class="product-default-img-link">
                                                                 <img src="{{ product.image.url }}" alt="" class="product-default-img img-fluid">
                                                             </a>
                                                             <div class="product-action-icon-link">
@@ -39,7 +39,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-default-content">
-                                                            <h6 class="product-default-link"><a href="{% url 'product_detail' %}">{{ product.title }}</a></h6>
+                                                            <h6 class="product-default-link"><a href="{% url 'product_detail' product.id product.slug %}">{{ product.title }}</a></h6>
                                                             <span class="product-default-price">${{product.price|floatformat:2}}</span>
                                                         </div>
                                                     </div> <!-- End Product Defautlt Single -->

@@ -8,7 +8,7 @@
     <title>{% block title %} Droppit {% endblock %}</title>
 
     <!-- ::::::::::::::Favicon icon::::::::::::::-->
-    <link rel="shortcut icon" href="./images/favicon.ico" type="image/png">
+    <link rel="shortcut icon" href="{% static '' %}./images/favicon.ico" type="image/png">
 
 
     <!-- ::::::::::::::All CSS Files here :::::::::::::: -->
@@ -40,7 +40,7 @@
 <body>
 
     {% block header %}{% endblock %}
-    {% block banner %}{% endblock %}
+{#    {% block banner %}{% endblock %}#}
 
     <div class="breadcrumb-section">
         <div class="breadcrumb-wrapper">

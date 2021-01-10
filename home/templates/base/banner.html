@@ -14,7 +14,7 @@
                             <div class="col-10 col-md-8 col-xl-6">
                                 <h5>New products</h5>
                                 <h2>{{ slider.title }}</h2>
-                                <a href="{% url 'product_detail' %}" class="hero-button">Shopping Now</a>
+                                <a href="{% url 'product_detail' slider.id slider.slug %}" class="hero-button">Shopping Now</a>
                             </div>
                         </div>
                     </div>
