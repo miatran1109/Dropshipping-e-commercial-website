@@ -1,24 +1,27 @@
 from django.shortcuts import render
-from .models import *
 # Create your views here.
 from django.http import HttpResponse
 
+from .models import *
+from product.models import *
+
 
 def home(request):
-    context = {}
+    sliders = Product.objects.all().order_by('-id')[:4]
+    context = {'sliders': sliders}
     return render(request, 'pages/home.html', context)
 
 
 def cart(request):
     # check if the user is authenticated
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-
-    context = {'items': items, 'order': order}
+    # if request.user.is_authenticated:
+    #     customer = request.user.customer
+    #     order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    #     items = order.orderitem_set.all()
+    # else:
+    #     items = []
+    #
+    context = {}
     return render(request, 'pages/cart.html', context)
 
 

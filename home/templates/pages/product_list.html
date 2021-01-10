@@ -29,7 +29,7 @@
                                                     <div class="product-default-single border-around" data-aos="fade-up"  data-aos-delay="0">
                                                         <div class="product-img-warp">
                                                             <a href="{% url 'product_detail' %}" class="product-default-img-link">
-                                                                <img src="{{ product.image_url }}" alt="" class="product-default-img img-fluid">
+                                                                <img src="{{ product.image.url }}" alt="" class="product-default-img img-fluid">
                                                             </a>
                                                             <div class="product-action-icon-link">
                                                                 <ul>
@@ -39,7 +39,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-default-content">
-                                                            <h6 class="product-default-link"><a href="{% url 'product_detail' %}">{{ product.name }}</a></h6>
+                                                            <h6 class="product-default-link"><a href="{% url 'product_detail' %}">{{ product.title }}</a></h6>
                                                             <span class="product-default-price">${{product.price|floatformat:2}}</span>
                                                         </div>
                                                     </div> <!-- End Product Defautlt Single -->
@@ -47,30 +47,6 @@
                                                 {% endfor %}
                                             </div>
                                         </div> <!-- End Grid View Product -->
-                                        <!-- Start List View Product -->
-                                        <div class="tab-pane sort-layout-single" id="layout-list">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <!-- Start Product Defautlt Single -->
-                                                    <div class="product-list-single border-around">
-                                                        <a href="{% url 'product_detail' %}" class="product-list-img-link">
-                                                            <img src="{% static '' %}images/products_images/aments_products_image_5.jpg" alt="" class="img-fluid">
-                                                        </a>
-                                                        <div class="product-list-content">
-                                                            <h5 class="product-default-link"><a href="{% url 'product_detail' %}">{{ product.name }}</a></h5>
-                                                            <span class="product-list-price">${{product.price}}</span>
-                                                            <p>{{product.description}}</p>
-                                                            <div class="product-action-icon-link-list">
-                                                                <ul>
-                                                                    <li><a href="{% url 'wishlist' %}"><i class="icon-heart"></i></a></li>
-                                                                    <li><a href="#" data-toggle="modal" data-target="#modalAddcart"><i class="icon-shopping-cart"></i></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div> <!-- End Product Defautlt Single -->
-                                                </div>
-                                            </div>
-                                        </div> <!-- End List View Product -->
                                     </div>
                                 </div>
                             </div>
@@ -93,6 +69,7 @@
     </div> <!-- ...:::: End Shop Section:::... -->
 
     {% endblock %}
+
 
 
 {% block footer %} {% include 'base/foot.html' %} {% endblock %}
