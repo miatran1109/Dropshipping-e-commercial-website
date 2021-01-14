@@ -1,6 +1,8 @@
+from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import render
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import *
 from product.models import *
@@ -47,7 +49,21 @@ def about_us(request):
 
 
 def contact_us(request):
-    context = {}
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            data = ContactMessage()
+            data.name = form.cleaned_data['name']
+            data.email = form.cleaned_data['email']
+            data.subject = form.cleaned_data['subject']
+            data.message = form.cleaned_data['message']
+            data.ip = request.META.get('REMOTE_ADDR')
+            data.save()
+            messages.success(request, "Your message has been sent. Thanks for contact us!")
+            return HttpResponseRedirect('/contactus')
+
+    form = ContactForm
+    context = {'form': form}
     return render(request, 'pages/contact_us.html', context)
 
 
@@ -68,11 +84,14 @@ def policy(request):
 
 def product_list(request):
     products = Product.objects.all()
-    context = {'products': products}
+    paginator = Paginator(products, 25)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'products': products, 'page_obj': page_obj}
     return render(request, 'pages/product_list.html', context)
 
 
-def product_detail(request,id,slug):
+def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
     images = Images.objects.filter(product_id=id)

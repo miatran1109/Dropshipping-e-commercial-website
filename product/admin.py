@@ -62,8 +62,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['subject', 'comment', 'create_at']
-    list_filter = ['status']
-    readonly_fields = ('subject', 'comment', 'ip', 'user', 'product', 'rate', 'id')
+    readonly_fields = ('subject', 'comment', 'ip', 'product', 'rate', 'id')
 
 
 class ColorAdmin(admin.ModelAdmin):
