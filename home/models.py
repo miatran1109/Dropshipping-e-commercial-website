@@ -24,3 +24,4 @@ class ContactForm(ModelForm):
     class Meta:
         model = ContactMessage
         fields = {'name', 'subject', 'email', 'message'}
+

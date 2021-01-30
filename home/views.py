@@ -84,10 +84,10 @@ def policy(request):
 
 def product_list(request):
     products = Product.objects.all()
-    paginator = Paginator(products, 25)
-    page_number = request.GET.get('page')
+    paginator = Paginator(products, 2)
+    page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-    context = {'products': products, 'page_obj': page_obj}
+    context = {'page_obj': page_obj}
     return render(request, 'pages/product_list.html', context)
 
 
