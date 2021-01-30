@@ -105,8 +105,25 @@
                                     <li>
                                         <a href="{% url 'home' %}">Home</a>
                                     </li>
-                                    <li >
-                                        <a href="{% url 'product_list' %} ">Shop</a>
+                                    <li class="has-dropdown has-megaitem">
+                                        <a href="{% url 'product_list' %} ">Shop <i class="fa fa-angle-down"></i></a>
+                                        {% load mptt_tags %}
+                                        <div class="mega-menu">
+                                            <ul class="mega-menu-inner">
+                                            {% recursetree category %}
+                                                <!-- Mega Menu Sub Link -->
+                                                <li class="mega-menu-item">
+                                                    <a href="/category/{{ node.id }}/{{ node.slug }}" class="mega-menu-item-title">{{ node.title }}</a>
+                                                    {% if not node.is_leaf_node %}
+                                                        <ul class="mega-menu-sub">
+                                                            <li><a href="">{{ children  }}</a></li>
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endrecursetree %}
+                                            </ul>
+                                        </div>
+
                                     </li>
                                     <li>
                                         <a href="{% url 'about_us' %}">About Us</a>

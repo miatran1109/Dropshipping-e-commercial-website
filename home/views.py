@@ -9,9 +9,10 @@ from product.models import *
 
 
 def home(request):
+    category = Category.objects.all()
     sliders = Product.objects.all().order_by('-id')[:4]
     latest = Product.objects.all().order_by('-id')[:16]
-    context = {'sliders': sliders, 'latest': latest}
+    context = {'sliders': sliders, 'latest': latest, 'category': category}
     return render(request, 'pages/home.html', context)
 
 
@@ -24,27 +25,32 @@ def cart(request):
     # else:
     #     items = []
     #
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/cart.html', context)
 
 
 def checkout(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/checkout.html', context)
 
 
 def account(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/account.html', context)
 
 
 def wishlist(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/wish_list.html', context)
 
 
 def about_us(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/about_us.html', context)
 
 
@@ -63,31 +69,36 @@ def contact_us(request):
             return HttpResponseRedirect('/contactus')
 
     form = ContactForm
-    context = {'form': form}
+    category = Category.objects.all()
+    context = {'form': form, 'category': category}
     return render(request, 'pages/contact_us.html', context)
 
 
 def service(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/service.html', context)
 
 
 def faq(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/faq.html', context)
 
 
 def policy(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/policy.html', context)
 
 
 def product_list(request):
+    category = Category.objects.all()
     products = Product.objects.all()
     paginator = Paginator(products, 2)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj}
+    context = {'page_obj': page_obj, 'category': category}
     return render(request, 'pages/product_list.html', context)
 
 
@@ -103,5 +114,16 @@ def product_detail(request, id, slug):
 
 
 def login(request):
-    context = {}
+    category = Category.objects.all()
+    context = {'category': category}
     return render(request, 'pages/login.html', context)
+
+
+def category_product(request, id, slug):
+    category = Category.objects.all()
+    product_cat = Product.objects.filter(category_id=id)
+    paginator = Paginator(product_cat, 2)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    context = {'cat': product_cat, 'category': category, 'page_obj': page_obj}
+    return render(request, 'pages/category.html', context)

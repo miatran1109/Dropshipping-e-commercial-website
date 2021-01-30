@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %} Droppit - {{ product.title }} {% endblock %}
+
+{% block header%} {% include 'base/header.html' %} {% endblock %}
+{% block this_page %}{{ product.title }}{% endblock %}
+{% block current_page %} {{ product.title }}{% endblock  %}
+
+
+    {% block content %}
+           <!-- ...:::: Start Shop Section:::... -->
+    <div class="shop-section">
+        <div class="container">
+            <div class="row flex-column-reverse flex-lg-row">
+                <div class="col-lg-9">
+                    <!-- Start Tab Wrapper -->
+                    <div class="sort-product-tab-wrapper">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="tab-content tab-animate-zoom">
+                                        <!-- Start Grid View Product -->
+                                        <div class="tab-pane active show sort-layout-single" id="layout-3-grid">
+                                            <div class="row">
+                                                {% for product in page_obj %}
+                                                    <div class="col-xl-4 col-sm-6 col-12">
+                                                    {# Each "contact" is a Product model object. #}
+                                                        <div class="product-default-single border-around" data-aos="fade-up"  data-aos-delay="0">
+                                                            <div class="product-img-warp">
+                                                                <a href="{% url 'product_detail' product.id product.slug %}" class="product-default-img-link">
+                                                                    <img src="{{ product.image.url }}" alt="" class="product-default-img img-fluid">
+                                                                </a>
+                                                            </div>
+                                                             <div class="product-action-icon-link">
+                                                                <ul>
+                                                                    <li><a href="{% url 'wishlist' %}"><i class="icon-heart"></i></a></li>
+                                                                    <li><a href="#" data-toggle="modal" data-target="#modalAddcart"><i class="icon-shopping-cart"></i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                         <div class="product-default-content">
+                                                            <h6 class="product-default-link"><a href="{% url 'product_detail' product.id product.slug %}">{{ product.title }}</a></h6>
+                                                            <span class="product-default-price">${{product.price|floatformat:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div> <!-- End Grid View Product -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End Tab Wrapper -->
+
+                    <!-- Start Pagination -->
+                    <div class="page-pagination text-center" data-aos="fade-up"  data-aos-delay="0">
+                        <ul>
+{#                          get to previous page#}
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page=1">First</a></li>
+                                <li><a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                            {% endif %}
+
+{#                          current page#}
+                                <li><a class="active" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+
+{#                          get to next page#}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                            {% endif %}
+                        </ul>
+                    </div> <!-- End Pagination -->
+                </div> <!-- End Shop Product Sorting Section  -->
+            </div>
+        </div>
+    </div> <!-- ...:::: End Shop Section:::... -->
+
+
+    {% endblock %}
+
+{% block footer %}{% include 'base/foot.html' %}{% endblock %}
