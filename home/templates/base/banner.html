@@ -6,15 +6,15 @@
             {% for slider in sliders %}
             <div class="hero-area-single">
                 <div class="hero-area-bg">
-                    <img class="hero-img" src="{{ slider.image.url }}" style="height: 628px; width: 1920px " alt="">
+                    <img class="hero-img" src="{{ slider.img.url }}"  alt="{{ slider.title }}">
                 </div>
                 <div class="hero-content">
                     <div class="container">
                         <div class="row">
                             <div class="col-10 col-md-8 col-xl-6">
-                                <h5>New products</h5>
-                                <h2>{{ slider.title }}</h2>
-                                <a href="{% url 'product_detail' slider.id slider.slug %}" class="hero-button">Shopping Now</a>
+                                <h5>{{ slider.title }}</h5>
+                                <h2>{{ slider.subtitle }}</h2>
+                                <a href="{% url 'home' %}" class="hero-button">Shopping Now</a>
                             </div>
                         </div>
                     </div>

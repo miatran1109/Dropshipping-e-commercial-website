@@ -8,6 +8,7 @@
 
 
     {% block content %}
+
         <div class="product-details-section">
         <div class="container">
             <div class="row">
@@ -159,38 +160,97 @@
                                 <!-- Start Product Details Tab Content Singel -->
                                 <div class="tab-pane" id="review">
                                     <div class="single-tab-content-item">
-                                        <!-- Start - Review Comment -->
                                         <ul class="comment">
                                             <!-- Start - Review Comment list-->
                                             <li class="comment-list">
-                                                {% for cmt in comments %}
+                                                {% for comment in comments %}
                                                 <div class="comment-wrapper">
+                                                    <div class="comment-img">
+                                                        <img src="{% static ' ' %}images/user/image-1.png" alt="">
+                                                    </div>
                                                     <div class="comment-content">
                                                         <div class="comment-content-top">
                                                             <div class="comment-content-left">
-                                                                <h6 class="comment-name">{{ cmt.users }}</h6>
+                                                                <h6 class="comment-name">{{ comment.users }}</h6>
                                                                 <div class="product-review">
-{#                                                                    <span class="review-fill"><i class="fa fa-star"></i></span>#}
-{#                                                                    <span class="review-fill"><i class="fa fa-star"></i></span>#}
-{#                                                                    <span class="review-fill"><i class="fa fa-star"></i></span>#}
-{#                                                                    <span class="review-fill"><i class="fa fa-star"></i></span>#}
-{#                                                                    <span class="review-empty"><i class="fa fa-star"></i></span>#}
+                                                                        {% if comment.rate == 5 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                        {% if comment.rate == 4 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                        {% if comment.rate == 3 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                         {% if comment.rate == 2 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                        {% if comment.rate == 1 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
 
                                                                 </div>
                                                             </div>
                                                             <div class="comment-content-right">
-                                                                <a href="#"><i class="fa fa-reply">{{ cmt.comment }}</i></a>
+                                                                <a href="#"><i class="fa fa-reply"></i>Reply</a>
                                                             </div>
+                                                        </div>
+                                                        <div class="para-content">
+                                                            <p> {{ comment.comment }} </p>
                                                         </div>
                                                     </div>
                                                 </div>
+{#                                                <!-- Start - Review Comment Reply-->#}
+{#                                                <ul class="comment-reply">#}
+{#                                                    <li class="comment-reply-list">#}
+{#                                                        <div class="comment-wrapper">#}
+{#                                                            <div class="comment-img">#}
+{#                                                                <img src="{% static ' ' %}images/user/image-2.png" alt="">#}
+{#                                                            </div>#}
+{#                                                            <div class="comment-content">#}
+{#                                                                <div class="comment-content-top">#}
+{#                                                                    <div class="comment-content-left">#}
+{#                                                                        <h6 class="comment-name">Oaklee Odom</h6>#}
+{#                                                                    </div>#}
+{#                                                                    <div class="comment-content-right">#}
+{#                                                                        <a href="#"><i class="fa fa-reply"></i>Reply</a>#}
+{#                                                                    </div>#}
+{#                                                                </div>#}
+{##}
+{#                                                                <div class="para-content">#}
+{#                                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias culpa, inventore deserunt accusantium amet earum soluta consequatur quasi eum eius laboriosam, maiores praesentium explicabo enim dolores quaerat! Voluptas ad ullam quia odio sint sunt. Ipsam officia, saepe repellat. </p>#}
+{#                                                                </div>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </li>#}
+{#                                                </ul> <!-- End - Review Comment Reply-->#}
                                                 {% endfor %}
                                             </li> <!-- End - Review Comment list-->
                                         </ul> <!-- End - Review Comment -->
                                         <div class="review-form">
                                             <div class="review-form-text-top">
-                                                    <h5>ADD A REVIEW</h5>
-                                                    <p>Your email address will not be published. Required fields are marked *</p>
+                                                <h5>ADD A REVIEW</h5>
+                                                <p>Your email address will not be published. Required fields are marked *</p>
                                             </div>
                                             <form action="/product/comment/{{ product.id }}" method="post">
                                                 {% csrf_token %}
@@ -237,9 +297,13 @@
                                                     {% endif %}
                                                 </div>
                                             </form>
-                                            {% for message in messages %}
-                                                  <h3 class="col-12">  {{ message }} </h3>
-                                            {% endfor %}
+                                             {% if messages %}
+                                                    {% for mess in messages %}
+                                                      <div class="alert alert-{{ mess.tags }}" role="alert">
+                                                          {{ mess }}
+                                                      </div>
+                                                    {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div> <!-- End Product Details Tab Content Singel -->

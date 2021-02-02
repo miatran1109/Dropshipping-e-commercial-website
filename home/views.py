@@ -10,7 +10,7 @@ from product.models import *
 
 def home(request):
     category = Category.objects.all()
-    sliders = Product.objects.all().order_by('-id')[:4]
+    sliders = Slider.objects.all()
     latest = Product.objects.all().order_by('-id')[:16]
     context = {'sliders': sliders, 'latest': latest, 'category': category}
     return render(request, 'pages/home.html', context)

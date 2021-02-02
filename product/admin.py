@@ -77,6 +77,10 @@ class VariantsAdmin(admin.ModelAdmin):
     list_display = ['title', 'product', 'color', 'size', 'price', 'quantity', 'image_tag']
 
 
+class SliderAdmin(admin.ModelAdmin):
+    list_display = ['title', 'subtitle', 'img']
+
+
 admin.site.register(Category, CategoryAdmin2)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Comment, CommentAdmin)
@@ -84,3 +88,4 @@ admin.site.register(Images, ImagesAdmin)
 admin.site.register(Color, ColorAdmin)
 admin.site.register(Size, SizeAdmin)
 admin.site.register(Variants, VariantsAdmin)
+admin.site.register(Slider, SliderAdmin)

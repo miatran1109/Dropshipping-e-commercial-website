@@ -40,7 +40,6 @@ class Product(models.Model):
         ('Size', 'Size'),
         ('Color', 'Color'),
         ('Size-Color', 'Size-Color'),
-
     )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  # many to one relation with Category
     title = models.CharField(max_length=150)
@@ -159,3 +158,12 @@ class Variants(models.Model):
             return mark_safe('<img src="{}" height="50"/>'.format(img.image.url))
         else:
             return ""
+
+
+class Slider(models.Model):
+    title = models.CharField(blank=True, max_length=50)
+    subtitle = models.CharField(blank=True, max_length=50)
+    img = models.ImageField(blank=True, upload_to='images/')
+
+    def __str__(self):
+        return self.title
