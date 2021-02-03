@@ -99,6 +99,10 @@ class Comment(models.Model):
     ip = models.CharField(max_length=20, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies',  on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('create_at',)
 
     def __str__(self):
         return self.subject
