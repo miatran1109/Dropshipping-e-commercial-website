@@ -94,11 +94,11 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'droppit',
+        'NAME': 'project',
 
         'USER': 'postgres',
 
-        'PASSWORD': '110900',
+        'PASSWORD': 'vinhviral',
 
         'HOST': 'localhost',
 
