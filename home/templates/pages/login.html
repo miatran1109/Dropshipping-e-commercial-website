@@ -1,21 +1,22 @@
 {% extends 'base/base.html' %}
 {% load static %}
-    {% block title %} Droppit - Login {{ setting.title }} {% endblock %}
-    {% block header %} {% include 'base/header.html' %} {% endblock %}
-    {% block this_page %} Login {% endblock this_page %}
-    {% block current_page %} Login {% endblock current_page %}
+{% block title %} Droppit - Login {{ setting.title }} {% endblock %}
+{% block header %} {% include 'base/header.html' %} {% endblock %}
+{% block this_page %} Login {% endblock this_page %}
+{% block current_page %} Login {% endblock current_page %}
 
-    {% block content %}
+{% block content %}
 
-         <!-- ...:::: Start Customer Login Section :::... -->
+    <!-- ...:::: Start Customer Login Section :::... -->
     <div class="customer_login">
         <div class="container">
             <div class="row">
                 <!--login area start-->
                 <div class="col-lg-6 col-md-6">
-                    <div class="account_form" data-aos="fade-up"  data-aos-delay="0">
+                    <div class="account_form" data-aos="fade-up" data-aos-delay="0">
                         <h3>login</h3>
                         <form action="#" method="POST">
+                            {% csrf_token %}
                             <div class="default-form-box mb-20">
                                 <label>Username or email <span>*</span></label>
                                 <label>
@@ -29,7 +30,7 @@
                                 </label>
                             </div>
                             <div class="login_submit">
-                                <button class="mb-20" type="submit">login</button>
+                                <button class="mb-20" type="submit" value="login">login</button>
                                 <label class="checkbox-default mb-20" for="offer">
                                     <input type="checkbox" id="offer">
                                     <span>Remember me</span>
@@ -44,9 +45,10 @@
 
                 <!--register area start-->
                 <div class="col-lg-6 col-md-6">
-                    <div class="account_form register" data-aos="fade-up"  data-aos-delay="200">
+                    <div class="account_form register" data-aos="fade-up" data-aos-delay="200">
                         <h3>Register</h3>
-                        <form action="#">
+                        <form action="#" method="post">
+                            {% csrf_token %}
                             <div class="default-form-box mb-20">
                                 <label>Email address <span>*</span></label>
                                 <label>
@@ -60,7 +62,7 @@
                                 </label>
                             </div>
                             <div class="login_submit">
-                                <button type="submit">Register</button>
+                                <button type="submit" value="register">Register</button>
                             </div>
                         </form>
                     </div>
@@ -73,7 +75,7 @@
 
 
 
-    {% endblock %}
+{% endblock %}
 
 
-    {% block footer %} {% include 'base/foot.html' %} {% endblock %}
+{% block footer %} {% include 'base/foot.html' %} {% endblock %}

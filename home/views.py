@@ -1,8 +1,15 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import generics, status
+from .serializers import AccountSerializer, AccountLoginSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import *
 from product.models import *
@@ -113,17 +120,60 @@ def product_detail(request, id, slug):
     return render(request, 'pages/product_detail.html', context)
 
 
-def login(request):
-    category = Category.objects.all()
-    context = {'category': category}
-    return render(request, 'pages/login.html', context)
+# def login(request):
+#     context = {}
+#     return render(request, 'pages/login.html', context)
+#
+# def auth_view(request):
+#     username = request.POST.get('username', context)
+#     password = request.POST.get('password', context)
+#     user = auth.authenticate(username = username, password = password)
+#
+#     if user is not None:
+#         auth.login(request,user)
+#         return HttpResponseRedirect('/loggedin')
+#     else:
+#         return HttpResponseRedirect('/invalid')
 
 
-def category_product(request, id, slug):
-    category = Category.objects.all()
-    product_cat = Product.objects.filter(category_id=id)
-    paginator = Paginator(product_cat, 2)
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-    context = {'cat': product_cat, 'category': category, 'page_obj': page_obj}
-    return render(request, 'pages/category.html', context)
+class Register(generics.GenericAPIView):
+    serializer_class = AccountSerializer
+
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        user_data = serializer.data
+        return Response(user_data, status=status.HTTP_201_CREATED)
+
+
+class UserLoginView(APIView):
+    def post(self, request):
+        serializer = AccountLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = authenticate(
+                request,
+                username=serializer.validated_data['email'],
+                password=serializer.validated_data['password']
+            )
+            if user:
+                refresh = TokenObtainPairSerializer.get_token(user)
+                data = {
+                    'refresh_token': str(refresh),
+                    'access_token': str(refresh.access_token),
+                    'access_expires': int(settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds()),
+                    'refresh_expires': int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds())
+                }
+                return Response(data, status=status.HTTP_200_OK)
+
+            return Response({
+                'error_message': 'Email or password is incorrect!',
+                'error_code': 400
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({
+            'error_messages': serializer.errors,
+            'error_code': 400
+        }, status=status.HTTP_400_BAD_REQUEST)
