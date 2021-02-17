@@ -67,14 +67,14 @@ class Product(models.Model):
         return reverse('category_detail', kwargs={'slug': self.slug})
 
     def average_review(self):
-        reviews = Comment.objects.filter(product=self, status='True').aggregate(avarage=Avg('rate'))
+        reviews = Comment.objects.filter(product=self).aggregate(average=Avg('rate'))
         avg = 0
         if reviews["average"] is not None:
             avg = float(reviews["average"])
         return avg
 
     def countreview(self):
-        reviews = Comment.objects.filter(product=self, status='True').aggregate(count=Count('id'))
+        reviews = Comment.objects.filter(product=self).aggregate(count=Count('id'))
         cnt = 0
         if reviews["count"] is not None:
             cnt = int(reviews["count"])

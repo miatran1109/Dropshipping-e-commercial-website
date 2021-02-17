@@ -1159,6 +1159,7 @@ UC/10
     </table>
     <table id="61" parent="17" name="product_comment">
       <ObjectId>26791</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>958</StateNumber>
     </table>

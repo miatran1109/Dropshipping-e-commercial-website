@@ -30,7 +30,6 @@
                                     <img src="{{ image.image.url }}" alt="" style="height: 508px; width: 508px">
                                 </div>
                             {% endfor %}
-
                         </div>
                         <div class="product-image-thumb product-image-thumb-horizontal pos-relative">
                             <div class="zoom-active product-image-thumb-single">
@@ -51,13 +50,13 @@
                             <h4 class="title">{{product.title}}</h4>
                             <div class="d-flex align-items-center">
                                 <div class="product-review">
-                                    <span class="review-fill"><i class="fa fa-star"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star"></i></span>
-                                    <span class="review-empty"><i class="fa fa-star"></i></span>
+                                    <i class="fa fa-star{% if product.average_review < 1 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 2 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 3 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 4 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 5 %}-o empty {% endif %}"></i>
                                 </div>
-                                <a href="" class="customer-review">(customer review )</a>
+                                <a href="#review" class="customer-review">( {{ product.average_review | stringformat:".2f"}} / {{ product.countreview }} review(s) )</a>
                             </div>
                             <div class="price">${{product.price}}</div>
                            <p>{{ product.description }}</p>
@@ -113,7 +112,6 @@
                         <div class="product-details-meta mb-20">
                             <ul>
                                 <li><a href=""><i class="icon-heart"></i>Add to wishlist</a></li>
-                                
                             </ul>
                         </div> <!-- End  Product Details Meta Area-->
                         <!-- Start  Product Details Social Area-->
@@ -121,9 +119,7 @@
                             <ul>
                                 <li><a href="#" class="facebook"><i class="fa fa-facebook"></i>Like</a></li>
                                 <li><a href="#" class="twitter"><i class="fa fa-twitter"></i>Tweet</a></li>
-                                <li><a href="#" class="pinterest"><i class="fa fa-pinterest"></i>Save</a></li>
-                                <li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i>Save</a></li>
-                                <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i>Linked</a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i>Instagram</a></li>
                             </ul>
                         </div> <!-- End  Product Details Social Area-->
                     </div>
@@ -163,6 +159,9 @@
                                         <ul class="comment">
                                             <!-- Start - Review Comment list-->
                                             <li class="comment-list">
+                                                {% if not comments.all %}
+                                                    No comment yet...
+                                                {% endif %}
                                                 {% for comment in comments %}
                                                 <div class="comment-wrapper">
                                                     <div class="comment-img">
@@ -208,7 +207,6 @@
                                                                             <span class="review-empty"><i class="fa fa-star"></i></span>
                                                                             <span class="review-empty"><i class="fa fa-star"></i></span>
                                                                         {% endif %}
-
                                                                 </div>
                                                             </div>
                                                             <div class="comment-content-right">
@@ -250,7 +248,6 @@
                                         <div class="review-form">
                                             <div class="review-form-text-top">
                                                 <h5>ADD A REVIEW</h5>
-                                                <p>Your email address will not be published. Required fields are marked *</p>
                                             </div>
                                             <form action="/product/comment/{{ product.id }}" method="post">
                                                 {% csrf_token %}
@@ -275,18 +272,18 @@
                                                     </div>
                                                     <div class="rt-container">
                                                         <label>Rate this product:</label>
-                                                          <div class="col-rt-12">
-                                                              <fieldset>
-                                                                <span class="star-cb-group">
-                                                                  <input type="radio" id="rate-5" name="rate" value="5" /><label for="rate-5">5</label>
-                                                                  <input type="radio" id="rate-4" name="rate" value="4" /><label for="rate-4">4</label>
-                                                                  <input type="radio" id="rate-3" name="rate" value="3" /><label for="rate-3">3</label>
-                                                                  <input type="radio" id="rate-2" name="rate" value="2" /><label for="rate-2">2</label>
-                                                                  <input type="radio" id="rate-1" name="rate" value="1" /><label for="rate-1">1</label>
-                                                                  <input type="radio" id="rate-0" name="rate" value="0" class="star-cb-clear" /><label for="rate-0">0</label>
-                                                                </span>
-                                                              </fieldset>
-                                                        </div>
+                                                            <div class="col-rt-12">
+                                                                  <fieldset>
+                                                                        <span class="star-cb-group">
+                                                                              <input type="radio" id="rate-5" name="rate" value="5" /><label for="rate-5">5</label>
+                                                                              <input type="radio" id="rate-4" name="rate" value="4" /><label for="rate-4">4</label>
+                                                                              <input type="radio" id="rate-3" name="rate" value="3" /><label for="rate-3">3</label>
+                                                                              <input type="radio" id="rate-2" name="rate" value="2" /><label for="rate-2">2</label>
+                                                                              <input type="radio" id="rate-1" name="rate" value="1" /><label for="rate-1">1</label>
+                                                                              <input type="radio" id="rate-0" name="rate" value="0" class="star-cb-clear" /><label for="rate-0">0</label>
+                                                                        </span>
+                                                                  </fieldset>
+                                                            </div>
                                                     </div>
                                                     {% if user.id is not None %}
                                                         <div class="col-12">
