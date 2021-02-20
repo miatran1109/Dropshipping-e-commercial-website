@@ -4,12 +4,17 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
+from django.contrib.auth import authenticate
+import bcrypt
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
-from .serializers import AccountSerializer, AccountLoginSerializer
+from .serializers import AccountRegisterSerializer, AccountLoginSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from rest_framework.renderers import TemplateHTMLRenderer
+
 
 from .models import *
 from product.models import *
@@ -120,10 +125,11 @@ def product_detail(request, id, slug):
     return render(request, 'pages/product_detail.html', context)
 
 
-# def login(request):
-#     context = {}
-#     return render(request, 'pages/login.html', context)
-#
+def login(request):
+    category = Category.objects.all()
+    context = {'category': category }
+    return render(request, 'pages/login.html', context)
+
 # def auth_view(request):
 #     username = request.POST.get('username', context)
 #     password = request.POST.get('password', context)
@@ -136,26 +142,38 @@ def product_detail(request, id, slug):
 #         return HttpResponseRedirect('/invalid')
 
 
-class Register(generics.GenericAPIView):
-    serializer_class = AccountSerializer
+class RegisterView(generics.GenericAPIView):
+    serializer_class = AccountRegisterSerializer
 
     def post(self, request):
         user = request.data
+        password = user["password"]
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password.encode('utf8'), salt)
+        user["salt"] = salt.decode("utf8")
+        user["password"] = hashed.decode("utf8")
+
+
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         user_data = serializer.data
+        del(user_data['salt'])
         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
 class UserLoginView(APIView):
+    # serializer_class = AccountLoginSerializer
+
+    # renderer_classes = [TemplateHTMLRenderer]
+    # template_name = 'pages/login.html'
     def post(self, request):
         serializer = AccountLoginSerializer(data=request.data)
         if serializer.is_valid():
             user = authenticate(
                 request,
-                username=serializer.validated_data['email'],
+                email=serializer.validated_data['email'],
                 password=serializer.validated_data['password']
             )
             if user:

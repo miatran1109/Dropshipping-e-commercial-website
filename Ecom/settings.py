@@ -31,14 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES':[
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
-
-AUTH_USER_MODEL = 'home.Account'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,6 +51,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 ]
+
+AUTH_USER_MODEL = 'home.Account'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -61,8 +62,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'mptt',
-    #'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    # 'mptt',
+    # 'whitenoise.storage.CompressedManifestStaticFilesStorage',
 ]
 
 ROOT_URLCONF = 'Ecom.urls'
@@ -173,3 +174,16 @@ MEDIA_URL = '/images/products_images/'
 
 LOGIN_REDIRECT_URL = "home"
 
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
+
+SITE_ID = 1
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

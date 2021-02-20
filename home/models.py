@@ -1,36 +1,42 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.forms import ModelForm, forms, TextInput
+from django.utils.translation import ugettext_lazy as _
+
 
 # User model
-class AccountManager(PermissionsMixin):
-    object = BaseUserManager()
+class AccountManager(BaseUserManager):
+    # object = BaseUserManager()
 
     class Meta:
         abstract = True
 
-    def create_user(self, username, email, password=None):
-        if username is None:
-            raise TypeError('Username cannot be empty')
+    def create_user(self, email,salt, password=None, **extra_fields):
         if email is None:
             raise TypeError('Email cannot be empty')
-        user = self.model(username=username, email=self.normalize_email(email))
+        if not email:
+            raise ValueError('The Email must be set')
+        user = self.model(email = email,salt = salt, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_super_user(self, username, email, password=None):
-        if password is None:
-            raise TypeError('Password cannot be empty')
+    def create_superuser(self, email,salt, password=None, **extra_fields):
 
-        user = self.create_user(username, email, password)
-        user.is_super_user = True
-        user.is_admin = True
-        user.save()
-        return user
+        #Create and save a SuperUser with the given email and password.
+
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+        return self.create_user(email,salt, password, **extra_fields)
 
 
-class Account(AbstractBaseUser):
+class Account(AbstractBaseUser, PermissionsMixin):
     username = models.CharField('settings.AUTH_USER_MODEL', max_length=300, unique=True)
     email = models.EmailField(max_length=300, unique=True)
     is_verified = models.BooleanField(default=False)
@@ -38,13 +44,14 @@ class Account(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)  # only for superuser
+    salt = models.CharField(max_length = 1000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
-    objects = AccountManager
+    objects = AccountManager()
 
     def __str__(self):
         return self.email
