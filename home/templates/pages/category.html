@@ -24,7 +24,6 @@
                                             <div class="row">
                                                 {% for product in page_obj %}
                                                     <div class="col-xl-4 col-sm-6 col-12">
-                                                    {# Each "contact" is a Product model object. #}
                                                         <div class="product-default-single border-around" data-aos="fade-up"  data-aos-delay="0">
                                                             <div class="product-img-warp">
                                                                 <a href="{% url 'product_detail' product.id product.slug %}" class="product-default-img-link">

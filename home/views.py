@@ -1,11 +1,18 @@
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
+from rest_framework import status, generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import *
 from product.models import *
+from .serializers import AccountLoginSerializer, AccountSerializer
 
 
 def home(request):
@@ -106,10 +113,37 @@ def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
     images = Images.objects.filter(product_id=id)
-    comments = Comment.objects.filter(product_id=id)
+    comments = Comment.objects.filter(product_id=id, parent=None).order_by('-id')
     context = {'product': product, 'category': category,
                'images': images, 'comments': comments,
                }
+    url = request.META.get('HTTP_REFERER')
+    product = get_object_or_404(Product, slug=slug)
+    comments = product.comments.filter(parent__isnull=True)
+    prod = Product.objects.get(id=id)
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            parent_id = None
+
+            new_comment = comment_form.save(commit=False)
+            new_comment.product_id = id
+            user_name = request.settings.AUTH_USER_MODEL
+            new_comment.users_id = user_name.id
+            try:
+                parent_id = request.POST['parent_id']
+            except:
+                pass
+            if parent_id:
+                new_comment = comment_form.save(commit=False)
+                new_comment.prod = prod
+                new_comment.parent = comments.get(id=parent_id)
+                new_comment.save()
+
+            new_comment.save()
+
+            return HttpResponseRedirect(url)
+
     return render(request, 'pages/product_detail.html', context)
 
 
@@ -127,3 +161,46 @@ def category_product(request, id, slug):
     page_obj = paginator.get_page(page_number)
     context = {'cat': product_cat, 'category': category, 'page_obj': page_obj}
     return render(request, 'pages/category.html', context)
+
+
+class Register(generics.GenericAPIView):
+    serializer_class = AccountSerializer
+
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        user_data = serializer.data
+        return Response(user_data, status=status.HTTP_201_CREATED)
+
+
+class UserLoginView(APIView):
+    def post(self, request):
+        serializer = AccountLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = authenticate(
+                request,
+                username=serializer.validated_data['email'],
+                password=serializer.validated_data['password']
+            )
+            if user:
+                refresh = TokenObtainPairSerializer.get_token(user)
+                data = {
+                    'refresh_token': str(refresh),
+                    'access_token': str(refresh.access_token),
+                    'access_expires': int(settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds()),
+                    'refresh_expires': int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds())
+                }
+                return Response(data, status=status.HTTP_200_OK)
+
+            return Response({
+                'error_message': 'Email or password is incorrect!',
+                'error_code': 400
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({
+            'error_messages': serializer.errors,
+            'error_code': 400
+        }, status=status.HTTP_400_BAD_REQUEST)

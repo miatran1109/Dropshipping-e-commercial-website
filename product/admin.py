@@ -62,7 +62,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['subject', 'comment', 'create_at']
-    readonly_fields = ('subject', 'comment', 'ip', 'product', 'rate', 'id')
+    readonly_fields = ('subject', 'comment', 'product', 'rate', 'id')
 
 
 class ColorAdmin(admin.ModelAdmin):

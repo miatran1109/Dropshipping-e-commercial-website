@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.global_settings import AUTH_USER_MODEL
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -8,6 +10,9 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+#
+# from Ecom.settings import AUTH_USER_MODEL
+from home.models import Account
 
 
 class Category(MPTTModel):
@@ -67,14 +72,14 @@ class Product(models.Model):
         return reverse('category_detail', kwargs={'slug': self.slug})
 
     def average_review(self):
-        reviews = Comment.objects.filter(product=self, status='True').aggregate(avarage=Avg('rate'))
+        reviews = Comment.objects.filter(product=self).aggregate(average=Avg('rate'))
         avg = 0
         if reviews["average"] is not None:
             avg = float(reviews["average"])
         return avg
 
     def countreview(self):
-        reviews = Comment.objects.filter(product=self, status='True').aggregate(count=Count('id'))
+        reviews = Comment.objects.filter(product=self).aggregate(count=Count('id'))
         cnt = 0
         if reviews["count"] is not None:
             cnt = int(reviews["count"])
@@ -90,19 +95,19 @@ class Images(models.Model):
         return self.title
 
 
-class Comment(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    users = models.ForeignKey(User, on_delete=models.CASCADE)
+class Comment(MPTTModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50, blank=True)
     comment = models.TextField(max_length=250, blank=True)
     rate = models.IntegerField(default=1)
-    ip = models.CharField(max_length=20, blank=True)
+    # ip = models.CharField(max_length=20, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies',  on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', blank=True, null=True, related_name='replies', on_delete=models.CASCADE)
 
-    class Meta:
-        ordering = ('create_at',)
+    class MPTTMeta:
+        order_insertion_by = ['create_at']
 
     def __str__(self):
         return self.subject
