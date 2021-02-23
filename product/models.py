@@ -90,8 +90,8 @@ class Images(models.Model):
         return self.title
 
 
-class Comment(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class Comment(MPTTModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50, blank=True)
     comment = models.TextField(max_length=250, blank=True)
@@ -99,10 +99,10 @@ class Comment(models.Model):
     ip = models.CharField(max_length=20, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies',  on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', blank=True, null=True, related_name='replies', on_delete=models.CASCADE)
 
-    class Meta:
-        ordering = ('create_at',)
+    class MPTTMeta:
+        order_insertion_by = ['create_at']
 
     def __str__(self):
         return self.subject

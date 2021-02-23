@@ -22,7 +22,6 @@ from datetime import datetime
 
 from rest_framework.renderers import TemplateHTMLRenderer
 
-
 from .models import *
 from product.models import *
 
@@ -125,17 +124,19 @@ def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
     images = Images.objects.filter(product_id=id)
-    comments = Comment.objects.filter(product_id=id)
+    comments = Comment.objects.filter(product_id=id, parent=None).order_by('-id')
     context = {'product': product, 'category': category,
                'images': images, 'comments': comments,
                }
+
     return render(request, 'pages/product_detail.html', context)
 
 
 def login(request):
     category = Category.objects.all()
-    context = {'category': category }
+    context = {'category': category}
     return render(request, 'pages/login.html', context)
+
 
 # def auth_view(request):
 #     username = request.POST.get('username', context)
@@ -160,13 +161,12 @@ class RegisterView(generics.GenericAPIView):
         user["salt"] = salt.decode("utf8")
         user["password"] = hashed.decode("utf8")
 
-
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         user_data = serializer.data
-        del(user_data['salt'])
+        del (user_data['salt'])
         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
