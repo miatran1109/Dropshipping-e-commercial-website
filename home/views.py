@@ -10,8 +10,15 @@ import bcrypt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
+from django.db.models.expressions import RawSQL
 from .serializers import AccountRegisterSerializer, AccountLoginSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.db import connection
+from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.crypto import get_random_string
+import jwt
+from datetime import datetime
 
 from rest_framework.renderers import TemplateHTMLRenderer
 
@@ -148,8 +155,8 @@ class RegisterView(generics.GenericAPIView):
     def post(self, request):
         user = request.data
         password = user["password"]
-        salt = bcrypt.gensalt()
-        hashed = bcrypt.hashpw(password.encode('utf8'), salt)
+        salt = bcrypt.gensalt()                                 #Generate a salt for hashing password
+        hashed = bcrypt.hashpw(password.encode('utf8'), salt)   #Hash salt with password to save to DB so if someone access to the DB they can't see the user password
         user["salt"] = salt.decode("utf8")
         user["password"] = hashed.decode("utf8")
 
@@ -164,34 +171,34 @@ class RegisterView(generics.GenericAPIView):
 
 
 class UserLoginView(APIView):
-    # serializer_class = AccountLoginSerializer
-
-    # renderer_classes = [TemplateHTMLRenderer]
-    # template_name = 'pages/login.html'
     def post(self, request):
-        serializer = AccountLoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = authenticate(
-                request,
-                email=serializer.validated_data['email'],
-                password=serializer.validated_data['password']
-            )
-            if user:
-                refresh = TokenObtainPairSerializer.get_token(user)
-                data = {
-                    'refresh_token': str(refresh),
-                    'access_token': str(refresh.access_token),
-                    'access_expires': int(settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds()),
-                    'refresh_expires': int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds())
-                }
-                return Response(data, status=status.HTTP_200_OK)
+        user_email = request.data['email']
+        user_password = request.data['password']
 
+
+        user_obj = Account.objects.filter(id__in = RawSQL('SELECT id FROM home_account WHERE email = %s',[user_email]))
+        user_value = user_obj.values()
+        username = user_value[0]['username']
+        user_id = user_value[0]['id']
+
+        user_salt = user_value[0]['salt']
+        encode_salt = bytes(str(user_salt).encode('utf8'))
+        hashed = bcrypt.hashpw(user_password.encode('utf8'), encode_salt)
+        decode_hashed = hashed.decode('utf8')
+        check_hashed = user_value[0]['password']
+
+        if check_hashed == decode_hashed:
+            random_string = get_random_string(length=20)
+            encoded_jwt = jwt.encode({"some": "payload"}, random_string, algorithm="HS256")
+            Token.objects.create(userID = user_id,token = encoded_jwt)
+            return Response({
+                'username': username,
+                'email': user_email,
+                'token': encoded_jwt
+            },status=status.HTTP_200_OK)
+
+        else:
             return Response({
                 'error_message': 'Email or password is incorrect!',
                 'error_code': 400
             }, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response({
-            'error_messages': serializer.errors,
-            'error_code': 400
-        }, status=status.HTTP_400_BAD_REQUEST)

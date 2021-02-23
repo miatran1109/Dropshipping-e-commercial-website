@@ -49,7 +49,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username','salt','password']
 
     objects = AccountManager()
 
@@ -59,6 +59,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
     def tokens(self):
         return ''
 
+class Token(models.Model):
+    userID = models.IntegerField(blank = False, max_length = 5000)
+    token = models.CharField(blank = False, max_length = 5000)
+    created_at = models.DateTimeField(auto_now_add = True)
 
 class ContactMessage(models.Model):
     name = models.CharField(blank=True, max_length=50)

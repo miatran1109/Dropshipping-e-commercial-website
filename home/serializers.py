@@ -1,4 +1,4 @@
-from .models import Account
+from .models import Account, Token
 from rest_framework import serializers
 
 
@@ -19,9 +19,11 @@ class AccountRegisterSerializer(serializers.ModelSerializer):
         return attrs
 
 
-class AccountLoginSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length = 50, min_length = 5, write_only = True)
+class AccountLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField()
 
+class TokenSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
-        fields = ['email', 'password']
+        model = Token
+        fields = ['user_id', 'token']
