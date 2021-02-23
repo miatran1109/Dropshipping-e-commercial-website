@@ -156,8 +156,9 @@ class RegisterView(generics.GenericAPIView):
     def post(self, request):
         user = request.data
         password = user["password"]
-        salt = bcrypt.gensalt()                                 #Generate a salt for hashing password
-        hashed = bcrypt.hashpw(password.encode('utf8'), salt)   #Hash salt with password to save to DB so if someone access to the DB they can't see the user password
+        salt = bcrypt.gensalt()  # Generate a salt for hashing password
+        hashed = bcrypt.hashpw(password.encode('utf8'),
+                               salt)  # Hash salt with password to save to DB so if someone access to the DB they can't see the user password
         user["salt"] = salt.decode("utf8")
         user["password"] = hashed.decode("utf8")
 
@@ -175,8 +176,7 @@ class UserLoginView(APIView):
         user_email = request.data['email']
         user_password = request.data['password']
 
-
-        user_obj = Account.objects.filter(id__in = RawSQL('SELECT id FROM home_account WHERE email = %s',[user_email]))
+        user_obj = Account.objects.filter(id__in=RawSQL('SELECT id FROM home_account WHERE email = %s', [user_email]))
         user_value = user_obj.values()
         username = user_value[0]['username']
         user_id = user_value[0]['id']
@@ -187,18 +187,28 @@ class UserLoginView(APIView):
         decode_hashed = hashed.decode('utf8')
         check_hashed = user_value[0]['password']
 
+        now = datetime.now()
+
         if check_hashed == decode_hashed:
             random_string = get_random_string(length=20)
             encoded_jwt = jwt.encode({"some": "payload"}, random_string, algorithm="HS256")
-            Token.objects.create(userID = user_id,token = encoded_jwt)
-            return Response({
-                'username': username,
-                'email': user_email,
-                'token': encoded_jwt
-            },status=status.HTTP_200_OK)
-
+            try:
+                Token.objects.get(userID=user_id)
+                Token.objects.update(token=encoded_jwt, created_at=now)
+                return Response({
+                    'username': username,
+                    'email': user_email,
+                    'token': encoded_jwt
+                }, status=status.HTTP_200_OK)
+            except Token.DoesNotExist:
+                Token.objects.create(userID=user_id, token=encoded_jwt)
+                return Response({
+                    'username': username,
+                    'email': user_email,
+                    'token': encoded_jwt
+                }, status=status.HTTP_200_OK)
         else:
             return Response({
-                'error_message': 'Email or password is incorrect!',
-                'error_code': 400
+             'error_message': 'Email or password is incorrect!',
+             'error_code': 400
             }, status=status.HTTP_400_BAD_REQUEST)
