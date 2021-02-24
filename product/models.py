@@ -34,6 +34,25 @@ class Category(MPTTModel):
         return ' / '.join(full_path[::-1])
 
 
+
+class Shopee(models.Model):
+    brand = models.CharField(blank=True, max_length=50)
+    categories = models.CharField(blank=True, max_length=50)
+    description = models.CharField(blank=True, max_length=50)
+    img_urls_0 = models.CharField(blank=True, max_length=50)
+    img_urls_1 = models.CharField(blank=True, max_length=50)
+    img_urls_2 = models.CharField(blank=True, max_length=50)
+    img_urls_3 = models.CharField(blank=True, max_length=50)
+    img_urls_4 = models.CharField(blank=True, max_length=50)
+    price = models.CharField(blank=True, max_length=50)
+    product_url = models.CharField(blank=True, max_length=50)
+    supplier = models.CharField(blank=True, max_length=50)
+    title = models.CharField(blank=True, max_length=50)
+
+    def __str__(self):
+        return self.title
+
+
 class Product(models.Model):
     VARIANTS = (
         ('None', 'None'),
@@ -41,7 +60,7 @@ class Product(models.Model):
         ('Color', 'Color'),
         ('Size-Color', 'Size-Color'),
     )
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)  # many to one relation with Category
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     description = models.TextField(max_length=255)
     image = models.ImageField(upload_to='images/', null=False)
@@ -52,6 +71,7 @@ class Product(models.Model):
     slug = models.SlugField(null=False, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+    shopee_prod = models.ForeignKey(Shopee, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -171,3 +191,4 @@ class Slider(models.Model):
 
     def __str__(self):
         return self.title
+
