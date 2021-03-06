@@ -124,7 +124,7 @@ def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
     images = Images.objects.filter(product_id=id)
-    comments = Comment.objects.filter(product_id=id, parent=None).order_by('-id')
+    comments = Comment.objects.filter(product_id=id).order_by('-id')
     context = {'product': product, 'category': category,
                'images': images, 'comments': comments,
                }

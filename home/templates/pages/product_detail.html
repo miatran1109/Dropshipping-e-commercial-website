@@ -1,16 +1,10 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% load mptt_tags %}
-
 {% block title %} Droppit - {{ product.title }} {% endblock %}
-
 {% block header%} {% include 'base/header.html' %} {% endblock %}
 {% block this_page %}{{ product.title }}{% endblock %}
 {% block current_page %} {{ product.title }}{% endblock  %}
-
-
     {% block content %}
-
         <div class="product-details-section">
         <div class="container">
             <div class="row">
@@ -26,7 +20,6 @@
                                     <img src="{{ product.image.url }}" alt="" style="height: 508px; width: 508px">
                                 </div>
                             {% endif %}
-
                             {% for image in images %}
                                 <div class="product-image-large-single zoom-image-hover">
                                     <img src="{{ image.image.url }}" alt="" style="height: 508px; width: 508px">
@@ -52,11 +45,11 @@
                             <h4 class="title">{{product.title}}</h4>
                             <div class="d-flex align-items-center">
                                 <div class="product-review">
-                                    <span class="review-fill"><i class="fa fa-star{% if product.average_review < 1%}-o empty{% endif%}"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star{% if product.average_review < 2%}-o empty{% endif%}"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star{% if product.average_review < 3%}-o empty{% endif%}"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star{% if product.average_review < 4%}-o empty{% endif%}"></i></span>
-                                    <span class="review-fill"><i class="fa fa-star{% if product.average_review < 5%}-o empty{% endif%}"></i></span>
+                                    <i class="fa fa-star{% if product.average_review < 1 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 2 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 3 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 4 %}-o empty {% endif %}"></i>
+                                    <i class="fa fa-star{% if product.average_review < 5 %}-o empty {% endif %}"></i>
                                 </div>
                                 <a href="#review" class="customer-review">( {{ product.average_review | stringformat:".2f"}} / {{ product.countreview }} review(s) )</a>
                             </div>
@@ -104,7 +97,6 @@
                                         <input min="1" max="100" value="1" type="number">
                                     </div>
                                 </div>
-
                                 <div class="product-add-to-cart-btn">
                                     <a href="#" data-toggle="modal" data-target="#modalAddcart">Add To Cart</a>
                                 </div>
@@ -129,7 +121,6 @@
             </div>
         </div>
     </div> <!-- End Product Details Section -->
-
     <!-- Start Product Content Tab Section -->
     <div class="product-details-content-tab-section section-inner-bg section-top-gap-100">
         <div class="container">
@@ -139,13 +130,12 @@
                         <!-- Start Product Details Tab Button -->
                         <ul class="nav tablist product-details-content-tab-btn d-flex justify-content-center">
                             <li><a class="nav-link active" data-toggle="tab" href="#description">
-                                    <h5>{{ product.description }}</h5>
+                                    <h5>Descriptions</h5>
                                 </a></li>
                             <li><a class="nav-link" data-toggle="tab" href="#review">
                                     <h5>Reviews </h5>
                                 </a></li>
                         </ul> <!-- End Product Details Tab Button -->
-
                         <!-- Start Product Details Tab Content -->
                         <div class="product-details-content-tab">
                             <div class="tab-content">
@@ -159,12 +149,12 @@
                                 <div class="tab-pane" id="review">
                                     <div class="single-tab-content-item">
                                         <ul class="comment">
-                                        {% recursetree comments %}
                                             <!-- Start - Review Comment list-->
                                             <li class="comment-list">
                                                 {% if not comments.all %}
                                                     No comment yet...
                                                 {% endif %}
+                                                {% for comment in comments %}
                                                 <div class="comment-wrapper">
                                                     <div class="comment-img">
                                                         <img src="{% static ' ' %}images/user/image-1.png" alt="">
@@ -172,103 +162,87 @@
                                                     <div class="comment-content">
                                                         <div class="comment-content-top">
                                                             <div class="comment-content-left">
-                                                                <h6 class="comment-name">{{ node.users }} | {{ node.create_at }}</h6>
+                                                                <h6 class="comment-name">{{ comment.users }}</h6>
                                                                 <div class="product-review">
-                                                                    <span class="review-fill"><i class="fa fa-star{% if node.rate < 1%}-o empty{% endif%}"></i></span>
-                                                                    <span class="review-fill"><i class="fa fa-star{% if node.rate < 2%}-o empty{% endif%}"></i></span>
-                                                                    <span class="review-fill"><i class="fa fa-star{% if node.rate < 3%}-o empty{% endif%}"></i></span>
-                                                                    <span class="review-fill"><i class="fa fa-star{% if node.rate < 4%}-o empty{% endif%}"></i></span>
-                                                                    <span class="review-fill"><i class="fa fa-star{% if node.rate < 5%}-o empty{% endif%}"></i></span>
+                                                                        {% if comment.rate == 5 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                        {% if comment.rate == 4 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                        {% if comment.rate == 3 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                         {% if comment.rate == 2 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
+                                                                        {% if comment.rate == 1 %}
+                                                                            <span class="review-fill"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                            <span class="review-empty"><i class="fa fa-star"></i></span>
+                                                                        {% endif %}
                                                                 </div>
                                                             </div>
                                                             <div class="comment-content-right">
-                                                                <a  href="#reply-form" data-toggle="collapse"><i class="fa fa-reply"></i>Reply</a>
+                                                                <a href="#"><i class="fa fa-reply"></i>Reply</a>
                                                             </div>
                                                         </div>
                                                         <div class="para-content">
-                                                            <p> {{ node.comment }} </p>
+                                                            <p> {{ comment.comment }} </p>
                                                         </div>
-                                                         <form action=" " method="post" id="reply-form" class="collapse">
-                                                             {% if node.id %}
-                                                                <input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" />
-                                                             {% endif %}
-                                                             {% csrf_token %}
-                                                             <div class="row">
-                                                                 <div class="col-md-6">
-                                                                     <div class="default-form-box mb-20">
-                                                                         <label for="comment-name"> Your Email <span>*</span></label>
-                                                                         <input id="comment-name" type="email" placeholder="Enter your mail" required>
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="col-md-6">
-                                                                     <div class="default-form-box mb-20">
-                                                                         <label for="comment-email">Subject <span>*</span></label>
-                                                                         <input id="comment-email" type="text" placeholder="Enter your subject" name="subject" required>
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="col-12">
-                                                                     <div class="default-form-box mb-20">
-                                                                         <label for="comment-review-text">Your reply <span>*</span></label>
-                                                                         <textarea id="comment-review-text" placeholder="Write a review" name="comment" required></textarea>
-                                                                     </div>
-                                                                 </div>
-                                                                 {% if user.id is not None %}
-                                                                     <div class="col-12">
-                                                                         <button class="form-submit-btn" type="submit">Submit</button>
-                                                                     </div>
-                                                                 {% else %}
-                                                                     Let log in and write a reply!
-                                                                 {% endif %}
-                                                             </div>
-                                                         </form>
                                                     </div>
                                                 </div>
-                                                <!-- Start - Review Comment Reply-->
-                                                <ul class="comment-reply">
-                                                    {% if not node.is_leaf_node %}
-                                                    <li class="comment-reply-list" >
-{#                                                        <div class="comment-wrapper" >#}
+{#                                                <!-- Start - Review Comment Reply-->#}
+{#                                                <ul class="comment-reply">#}
+{#                                                    <li class="comment-reply-list">#}
+{#                                                        <div class="comment-wrapper">#}
 {#                                                            <div class="comment-img">#}
 {#                                                                <img src="{% static ' ' %}images/user/image-2.png" alt="">#}
 {#                                                            </div>#}
 {#                                                            <div class="comment-content">#}
 {#                                                                <div class="comment-content-top">#}
 {#                                                                    <div class="comment-content-left">#}
-{#                                                                        <h6 class="comment-name">{{ replies.username }} | {{ replies.create_at }} </h6>#}
+{#                                                                        <h6 class="comment-name">Oaklee Odom</h6>#}
 {#                                                                    </div>#}
 {#                                                                    <div class="comment-content-right">#}
-{#                                                                        <a  href="#" data-toggle="collapse"><i class="fa fa-reply"></i>Reply</a>#}
+{#                                                                        <a href="#"><i class="fa fa-reply"></i>Reply</a>#}
 {#                                                                    </div>#}
 {#                                                                </div>#}
+{##}
 {#                                                                <div class="para-content">#}
-{#                                                                  <p> {{ replies.comment }} </p>#}
+{#                                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias culpa, inventore deserunt accusantium amet earum soluta consequatur quasi eum eius laboriosam, maiores praesentium explicabo enim dolores quaerat! Voluptas ad ullam quia odio sint sunt. Ipsam officia, saepe repellat. </p>#}
 {#                                                                </div>#}
 {#                                                            </div>#}
 {#                                                        </div>#}
-                                                    {{ replies }}
-                                                    </li>
-                                                    {% endif %}
-                                                </ul> <!-- End - Review Comment Reply-->
+{#                                                    </li>#}
+{#                                                </ul> <!-- End - Review Comment Reply-->#}
+                                                {% endfor %}
                                             </li> <!-- End - Review Comment list-->
-                                        {% endrecursetree %}
                                         </ul> <!-- End - Review Comment -->
-
                                         <div class="review-form">
                                             <div class="review-form-text-top">
-                                                <h5><a  href="#comment-form" data-toggle="collapse">ADD A REVIEW</a></h5>
+                                                <h5>ADD A REVIEW</h5>
                                             </div>
-                                             {% if messages %}
-                                                    {% for mess in messages %}
-                                                      <div class="alert alert-{{ mess.tags }}" role="alert">
-                                                          {{ mess }}
-                                                      </div>
-                                                    {% endfor %}
-                                            {% endif %}
-                                            <form action=" " method="post" id="comment-form" class="collapse">
+                                            <form action="/product/comment/{{ product.id }}" method="post">
                                                 {% csrf_token %}
-{#                                            {% if node.id %}#}
-{#                                                <input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" />#}
-{#                                            {% endif %}#}
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="default-form-box mb-20">
@@ -312,6 +286,13 @@
                                                     {% endif %}
                                                 </div>
                                             </form>
+                                             {% if messages %}
+                                                    {% for mess in messages %}
+                                                      <div class="alert alert-{{ mess.tags }}" role="alert">
+                                                          {{ mess }}
+                                                      </div>
+                                                    {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div> <!-- End Product Details Tab Content Singel -->
@@ -322,7 +303,6 @@
             </div>
         </div>
     </div> <!-- End Product Content Tab Section -->
-
     <!-- ...:::: Start Product  Section:::... -->
     <div class="product-section section-top-gap-100">
         <!-- Start Section Content -->
@@ -335,7 +315,6 @@
                 </div>
             </div>
         </div> <!-- End Section Content -->
-
         <!-- Start Product Wrapper -->
         <div class="product-wrapper" data-aos="fade-up"  data-aos-delay="200">
             <div class="container">
@@ -351,6 +330,7 @@
                                     <div class="product-action-icon-link">
                                         <ul>
                                             <li><a href="{% url 'wishlist' %}"><i class="icon-heart"></i></a></li>
+
                                             <li><a href="#" data-toggle="modal" data-target="#modalQuickview"><i class="icon-eye"></i></a></li>
                                             <li><a href="#" data-toggle="modal" data-target="#modalAddcart"><i class="icon-shopping-cart"></i></a></li>
                                         </ul>
@@ -366,8 +346,48 @@
             </div>
         </div> <!-- End Product Wrapper -->
     </div> <!-- ...:::: End Product Section:::... -->
-
+    <!-- ...:::: Start Product Section:::... -->
+    <div class="product-section section-top-gap-100">
+        <!-- Start Section Content -->
+        <div class="section-content-gap">
+            <div class="container">
+                <div class="row">
+                    <div class="section-content">
+                        <h3 class="section-title" data-aos="fade-up"  data-aos-delay="0">Upsell Products</h3>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Section Content -->
+        <!-- Start Product Wrapper -->
+        <div class="product-wrapper" data-aos="fade-up"  data-aos-delay="200">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="product-default-slider product-default-slider-4grids-1row">
+                            <!-- Start Product Defautlt Single -->
+                            <div class="product-default-single border-around">
+                                <div class="product-img-warp">
+                                    <a href="{% url 'product_detail' product.id product.slug %}" class="product-default-img-link">
+                                        <img src="{% static '' %}images/products_images/aments_products_image_1.jpg" alt="" class="product-default-img img-fluid">
+                                    </a>
+                                    <div class="product-action-icon-link">
+                                        <ul>
+                                            <li><a href="{% url 'wishlist' %}"><i class="icon-heart"></i></a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#modalQuickview"><i class="icon-eye"></i></a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#modalAddcart"><i class="icon-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-default-content">
+                                    <h6 class="product-default-link"><a href="{% url 'product_detail'  product.id product.slug %}">{{product.name}}</a></h6>
+                                    <span class="product-default-price">{{product.price}}</span>
+                                </div>
+                            </div> <!-- End Product Defautlt Single -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End product Wrapper -->
     </div> <!-- ...:::: End Product Section:::... -->
     {% endblock %}
-
 {% block footer %}{% include 'base/foot.html' %}{% endblock %}

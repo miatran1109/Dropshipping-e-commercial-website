@@ -1,4 +1,5 @@
 # from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.conf import settings
 # Create your models here.
@@ -8,6 +9,21 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+
+
+class ProductFromShopee(models.Model):
+    product_url = models.TextField(max_length=255)
+    title = models.TextField(max_length=255)
+    supplier = models.TextField(max_length=255)
+    img_urls = ArrayField(models.ImageField(blank=True, upload_to='images/'), blank=True)
+    variants = ArrayField(models.CharField(max_length=200), blank=True)
+    description = models.TextField(max_length=255)
+    brand = models.TextField(max_length=255)
+    categories = ArrayField(models.CharField(max_length=200), blank=True)
+    price = models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.title
 
 
 class Category(MPTTModel):
@@ -90,8 +106,8 @@ class Images(models.Model):
         return self.title
 
 
-class Comment(MPTTModel):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50, blank=True)
     comment = models.TextField(max_length=250, blank=True)
@@ -99,10 +115,6 @@ class Comment(MPTTModel):
     ip = models.CharField(max_length=20, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    parent = TreeForeignKey('self', blank=True, null=True, related_name='replies', on_delete=models.CASCADE)
-
-    class MPTTMeta:
-        order_insertion_by = ['create_at']
 
     def __str__(self):
         return self.subject
@@ -112,6 +124,7 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = {'subject', 'comment', 'rate'}
+
 
 
 class Color(models.Model):

@@ -15,7 +15,6 @@ class CategoryAdmin2(DraggableMPTTAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
 
-        # Add cumulative product count
         qs = Category.objects.add_related_count(
             qs,
             Product,
@@ -23,7 +22,6 @@ class CategoryAdmin2(DraggableMPTTAdmin):
             'products_cumulative_count',
             cumulative=True)
 
-        # Add non cumulative product count
         qs = Category.objects.add_related_count(qs,
                                                 Product,
                                                 'category',
@@ -34,7 +32,7 @@ class CategoryAdmin2(DraggableMPTTAdmin):
     def related_products_count(self, instance):
         return instance.products_count
 
-    related_products_count.short_description = 'Related products (for this specific category)'
+    related_products_count.short_description = 'Related products'
 
     def related_products_cumulative_count(self, instance):
         return instance.products_cumulative_count
@@ -53,9 +51,8 @@ class ImagesAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'image_tag']
+    list_display = ['title', 'category']
     list_filter = ['category']
-    readonly_fields = ('image_tag',)
     prepopulated_fields = {'slug': ('title',)}
     inlines = [ProductImageInline]
 
@@ -81,8 +78,23 @@ class SliderAdmin(admin.ModelAdmin):
     list_display = ['title', 'subtitle', 'img']
 
 
+class ShopeeAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    readonly_fields = ['title', 'product_url', 'img_urls',
+                       'price', 'description', 'categories',
+                       'variants', 'brand', 'supplier']
+
+    def add_to_product(self, request, queries):
+        product = Product
+        for qur in queries:
+            product = qur.save()
+
+    actions = [add_to_product]
+
+
 admin.site.register(Category, CategoryAdmin2)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(ProductFromShopee, ShopeeAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Images, ImagesAdmin)
 admin.site.register(Color, ColorAdmin)
