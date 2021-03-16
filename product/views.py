@@ -1,12 +1,16 @@
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+
 
 from home.models import ContactMessage
 from .models import *
 
 
+
 # Create your views here.
+
 def index(request):
     return HttpResponse("My Product Page")
 

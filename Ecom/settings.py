@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'mptt',
     'rest_framework',
     'rest_framework.authtoken',
+    'cart',
 ]
 
 AUTH_USER_MODEL = 'home.Account'
