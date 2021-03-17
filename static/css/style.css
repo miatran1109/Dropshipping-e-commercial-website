@@ -327,6 +327,52 @@ table {
   border-collapse: collapse;
 }
 
+table.cart {
+  margin-bottom:40px;
+}
+
+table.cart img {
+  width:180px;
+}
+
+#subheader .cart {
+  float:right;
+  padding-top:4px;
+}
+
+.recommendations {
+  clear:both;
+}
+
+.recommendations div {
+  float:left;
+}
+
+.recommendations img {
+  width:200px
+}
+
+.recommendations p {
+  clear:both;
+}
+.recommendations.cart {
+  width:60%;
+  float:left;
+  overflow:auto;
+}
+
+.recommendations.cart h3 {
+  margin-top:0;
+}
+
+.recommendations.cart .item {
+  margin-right:10px;
+}
+
+.recommendations.cart img {
+  width:120px;
+}
+
 caption {
   padding-top: 8px;
   padding-bottom: 8px;

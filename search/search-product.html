@@ -1,0 +1,30 @@
+<div class="row margin-res">
+    {% for catproduct in products %}
+    <div class="col-xl-2 col-6 col-grid-box">
+        <div class="product-box">
+            <div class="img-wrapper">
+                <div class="front">
+                    <a href="/product/{{catproduct.slug}}" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/pro3/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="/media/{{catproduct.image}}" class="img-fluid blur-up lazyload bg-img" alt="" style="display: none;"></a>
+                </div>
+                <div class="back">
+                    <a href="/product/{{catproduct.slug}}" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/pro3/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="/media/{{catproduct.image}}" class="img-fluid blur-up lazyload bg-img" alt="" style="display: none;"></a>
+                </div>
+                <div class="cart-info cart-wrap">
+                    <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="product-detail">
+                <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                </div>
+                <a href="/product/{{catproduct.slug}}">
+                    <h6>{{catproduct.name}}</h6>
+                </a>
+                <p>{{catproduct.overview}}
+                </p>
+                <h4>₹ {{catproduct.saleprice}}</h4>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,93 @@
+{% extends "home/base" %}
+{% load static %}
+
+{% block title %}
+    cart
+{% endblock %}
+
+{% block content %}
+   
+
+&nbsp
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<table id="cart" class="table table-hover table-condensed">
+    				<thead>
+						<tr>
+							<th style="width:50%">Product</th>
+							<th style="width:10%">Price</th>
+							<th style="width:8%">Quantity</th>
+							<th style="width:22%" class="text-center">Subtotal</th>
+							<th style="width:10%"></th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						{% for item in cart.items.all %}
+						{% with product=item.product %}
+						<tr>
+							<td data-th="Product">
+								<div class="row">
+									<div class="col-sm-2 hidden-xs">
+
+
+								<a href="{{ product.get_absolute_url }}">
+				                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" class="img-responsive">
+				                    </a>
+
+
+
+
+
+									</div>
+									<div class="col-sm-10">
+										<h4 class="nomargin">{{ product.name }}</h4>
+										<p>{{ product.descripion }}</p>
+									</div>
+								</div>
+							</td>
+							<td data-th="Price">$ {{ product.price }}</td>
+							<td data-th="Quantity">
+
+
+
+
+								
+								    <form action="{% url 'cart:cart_add_q' product.id  %}" >
+            						<input type="number" name="q" value="{{ item.quantity }}" class="form-control text-center"  onchange="this.form.submit()">	
+            						
+                					{% csrf_token %}
+                						
+                					</form>
+                					
+                        		
+                        			
+                    			
+
+							</td>
+							<td data-th="Subtotal" class="text-center">{{item.get_cost}}</td>
+							<td class="actions" data-th="">
+								
+								<a href="{% url 'cart:cart_remove' product.id %}" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>								
+							</td>
+						</tr>
+						{% endwith %}
+						{% endfor %}
+					</tbody>
+
+					<tfoot>
+						<tr class="visible-xs">
+							<td class="text-center"><strong>cart.</strong></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'product:product_list' %}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+							<td colspan="2" class="hidden-xs"></td>
+							<td class="hidden-xs text-center"><strong>Total $ {{cart.get_total_cost}}</strong></td>
+							<td><a href="{% url 'orders:order_create' %}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td> 
+						</tr>
+
+					</tfoot>
+				</table>
+
+&nbsp

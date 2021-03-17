@@ -1,49 +1,64 @@
-from django.shortcuts import render
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from __future__ import unicode_literals
 
+from django.shortcuts import render, redirect, get_object_or_404
+# from django.views.decorators.http import require_POST
+from product.apps.ProductConfig.models import Product
 from .models import Cart, CartItem
-
-##-------------- Cart Views --------------------------------------
-class DetailCart(DetailView):
-    model = Cart
-    template_name='cart/detail_cart.html'
-
-class ListCart(ListView):
-    model = Cart
-    context_object_name = 'carts'
-    template_name='cart/list_carts.html'
-
-class CreateCart(CreateView):
-    model = Cart
-    template_name = 'cart/create_cart.html'
-
-class Updatecart(UpdateView):
-    model = Cart
-    template_name = 'cart/update_cart.html'
-
-class DeleteCart(DeleteView):
-    model = Cart
-    template_name = 'cart/delete_cart.html'
+# from .forms import CartAddProductForm
+from django.contrib.auth.decorators import login_required
+# from .forms import CartAddProductForm
 
 
-##-------------- CartItem Views --------------------------------------
-class DetailCartItem(DetailView):
-    model = CartItem
-    template_name='cartitem/detail_cartitem.html'
+@login_required
+def cart_add(request, product_id, product_qty=None):
+    obj, created = Cart.objects.update_or_create(user=request.user)
+    product = get_object_or_404(Product, id=product_id)
+    item, itemCreated = CartItem.objects.update_or_create(
+        cart=obj, product=product)
+    item.price = product.price
+    if(itemCreated == False):
+        item.quantity = item.quantity+1
+    # if item.quantity = request.GET['q']
 
-class ListCartItem(ListView):
-    model = CartItem
-    context_object_name = 'cartitems'
-    template_name='cartitem/list_cartitems.html'
+    obj.items.add(item)
+    item.save()
+    obj.save()
+    return redirect('cart:cart_detail')
 
-class CreateItemCart(CreateView):
-    model = CartItem
-    template_name = 'cartitem/create_cartitem.html'
 
-class UpdateCartItem(UpdateView):
-    model = CartItem
-    template_name = 'cartitem/update_cartitem.html'
+@login_required
+def cart_add_q(request, product_id, product_qty=None):
+    obj, created = Cart.objects.update_or_create(user=request.user)
+    product = get_object_or_404(Product, id=product_id)
+    item, itemCreated = CartItem.objects.update_or_create(
+        cart=obj, product=product)
+    item.price = product.price
 
-class DeleteCartItem(DeleteView):
-    model = Cart
-    template_name = 'cartitem/delete_cartitem.html'
+    # if item.quantity = request.GET['q']
+    item.quantity = request.GET['q']
+    if request.GET['q'] == "0":
+        item.delete()
+    else:
+        obj.items.add(item)
+        item.save()
+        obj.save()
+    return redirect('cart:cart_detail')
+
+    # form = CartAddProductForm(request.POST)
+    # if form.is_valid():
+    #     cd = form.cleaned_data
+    #     item.quantity=cd['quantity'],
+
+def cart_remove(request, product_id):
+    obj, created = Cart.objects.update_or_create(user=request.user)
+    product = get_object_or_404(Product, id=product_id)
+    cartItems = CartItem.objects.filter(cart=obj, product=product)
+    cartItems.delete()
+    return redirect('cart:cart_detail')
+
+
+@login_required
+def cart_detail(request):
+
+    cart = Cart.objects.get(user=request.user)
+    return render(request, 'cart/cart_detail.html', {'cart': cart})

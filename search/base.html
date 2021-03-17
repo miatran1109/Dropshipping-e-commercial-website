@@ -1,0 +1,7 @@
+<form action="/search" method="get">
+    {% csrf_token %}
+    <div class="form-group">
+        <input type="text" class="form-control" name="search" id="search exampleInputPassword1" placeholder="Search a Product">
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+</form>

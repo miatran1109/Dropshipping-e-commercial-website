@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'cart',
+    'search',
+  
 ]
 
 AUTH_USER_MODEL = 'home.Account'
