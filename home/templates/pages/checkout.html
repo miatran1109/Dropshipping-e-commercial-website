@@ -73,13 +73,13 @@
                                 <div class="col-lg-6 mb-20">
                                     <div class="default-form-box">
                                         <label>First Name <span>*</span></label>
-                                        <input type="text">
+                                        <input id="first_name" type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 mb-20">
                                     <div class="default-form-box">
                                         <label>Last Name <span>*</span></label>
-                                        <input type="text">
+                                        <input id="last_name" type="text">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-20">
@@ -99,7 +99,7 @@
                                 <div class="col-12 mb-20">
                                     <div class="default-form-box">
                                         <label>Street address <span>*</span></label>
-                                        <input placeholder="House number and street name" type="text">
+                                        <input id="address" placeholder="House number and street name" type="text">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-20">
@@ -110,25 +110,25 @@
                                 <div class="col-12 mb-20">
                                     <div class="default-form-box">
                                         <label>Town / City <span>*</span></label>
-                                        <input type="text">
+                                        <input id="city" type="text">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-20">
                                     <div class="default-form-box">
-                                        <label>State / County <span>*</span></label>
-                                        <input type="text">
+                                        <label>State / District <span>*</span></label>
+                                        <input id="district" type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 mb-20">
                                     <div class="default-form-box">
                                         <label>Phone<span>*</span></label>
-                                        <input type="text">
+                                        <input id="phone" type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 mb-20">
                                     <div class="default-form-box">
                                         <label> Email Address <span>*</span></label>
-                                        <input type="text">
+                                        <input id="order_email" type="text">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -154,28 +154,28 @@
                                             <div class="col-lg-6 mb-20">
                                                 <div class="default-form-box">
                                                     <label>First Name <span>*</span></label>
-                                                    <input type="text">
+                                                    <input  type="text">
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 mb-20">
                                                 <div class="default-form-box">
                                                     <label>Last Name <span>*</span></label>
-                                                    <input type="text">
+                                                    <input  type="text">
                                                 </div>
                                             </div>
-                                            <div class="col-12 mb-20">
-                                                <div class="default-form-box">
-                                                    <label>Company Name</label>
-                                                    <input type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-12 mb-20">
-                                                <div class="select_form_select default-form-box">
-                                                    <label for="countru_name">Country <span>*</span></label>
-                                                    <select class="niceselect_option wide" name="cuntry" id="countru_name">
-                                                        <option value="2">Vietnam</option>
-                                                </div>
-                                            </div>
+{#                                            <div class="col-12 mb-20">#}
+{#                                                <div class="default-form-box">#}
+{#                                                    <label>Company Name</label>#}
+{#                                                    <input type="text">#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="col-12 mb-20">#}
+{#                                                <div class="select_form_select default-form-box">#}
+{#                                                    <label for="countru_name">Country <span>*</span></label>#}
+{#                                                    <select class="niceselect_option wide" name="cuntry" id="countru_name">#}
+{#                                                        <option value="2">Vietnam</option>#}
+{#                                                </div>#}
+{#                                            </div>#}
 
                                             <div class="col-12 mb-20">
                                                 <div class="default-form-box">
@@ -183,11 +183,11 @@
                                                     <input placeholder="House number and street name" type="text">
                                                 </div>
                                             </div>
-                                            <div class="col-12 mb-20">
-                                                <div class="default-form-box">
-                                                    <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
-                                                </div>
-                                            </div>
+{#                                            <div class="col-12 mb-20">#}
+{#                                                <div class="default-form-box">#}
+{#                                                    <input placeholder="Apartment, suite, unit etc. (optional)" type="text">#}
+{#                                                </div>#}
+{#                                            </div>#}
                                             <div class="col-12 mb-20">
                                                 <div class="default-form-box">
                                                     <label>Town / City <span>*</span></label>
@@ -196,7 +196,7 @@
                                             </div>
                                             <div class="col-12 mb-20">
                                                 <div class="default-form-box">
-                                                    <label>State / County <span>*</span></label>
+                                                    <label>District <span>*</span></label>
                                                     <input type="text">
                                                 </div>
                                             </div>
@@ -221,6 +221,45 @@
                                         <textarea id="order_note" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                     </div>
                                 </div>
+{#                                xoa ho anh cai ship to different address duoc khong#}
+                                <script>
+                                function sendMessageOrder() {
+                                    let first_name = document.getElementById("first_name").value;
+                                    let last_name = document.getElementById("last_name").value;
+                                    let address = document.getElementById("address").value;
+                                    let city = document.getElementById("city").value;
+                                    let district = document.getElementById("district").value;
+                                    let phone = document.getElementById("phone").value;
+                                    let order_email = document.getElementById("order_email").value;
+                                    let note = document.getElementById("order_note").value;
+                                    let check_token = sessionStorage.token;
+                                    let xmlRequest = new XMLHttpRequest();
+                                    xmlRequest.onreadystatechange = function () {
+                                        if (this.readyState == 4) {
+                                            if (xmlRequest.status == 201) {
+                                                alert('Thanks for your order!\n');
+                                                location.replace('/');
+                                            } else if (xmlRequest.status != 201) {
+                                                alert('Sorry something gone wrong :(\n');
+                                            }
+                                            window.location.reload();
+                                        }
+                                    }
+                                    xmlRequest.open("POST", "http://127.0.0.1:8000/api/authenticationrequired")
+                                    xmlRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                                    xmlRequest.send(JSON.stringify({
+                                        "token": check_token,
+                                        "first_name": first_name,
+                                        "last_name": last_name,
+                                        "address": address,
+                                        "city": city,
+                                        "district": district,
+                                        "phone": phone,
+                                        "email": order_email,
+                                        "note": note,
+                                    }))
+                                }
+                            </script>
                             </div>
                         </form>
                     </div>
@@ -245,7 +284,7 @@
                                         </tr>
                                         <tr>
                                             <th>Shipping</th>
-                                            <td><strong>$</strong></td>
+                                            <td><strong>3$</strong></td>
                                         </tr>
                                         <tr class="order_total">
                                             <th>Order Total</th>
@@ -279,7 +318,7 @@
                                     </div>
                                 </div>
                                 <div class="order_button pt-15">
-                                    <button type="submit">Proceed to PayPal</button>
+                                    <button type="button" onclick="sendMessageOrder(); return false;">Confirm Order</button>
                                 </div>
                             </div>
                         </form>

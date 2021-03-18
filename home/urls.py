@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
 
 from . import views
-from .views import UserLoginView, RegisterView
+from .views import UserLoginView, RegisterView, CheckoutView
 
 urlpatterns = [
     # Leave as empty string for base url
@@ -20,6 +20,7 @@ urlpatterns = [
     path('product/<int:id>/<slug:slug>', views.product_detail, name="product_detail"),
     path('login/', views.login, name="login"),
     path('api/register/', RegisterView.as_view(), name="register"),
-    path('api/authenticate', UserLoginView.as_view(), name="authenticate")
+    path('api/authenticate/', UserLoginView.as_view(), name="authenticate"),
+    path('api/authenticationrequired', CheckoutView.as_view(), name="token_authentication")
     # path('category/<int:id>/<slug:slug>', views.category_product, name="cat_pro"),
 ]

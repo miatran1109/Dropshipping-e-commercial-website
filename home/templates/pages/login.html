@@ -22,26 +22,48 @@
                         <form action="#" method="POST">
                             {% csrf_token %}
                             <div class="default-form-box mb-20">
-                                <label>Username or email <span>*</span></label>
+                                <label>Email <span>*</span></label>
                                 <label>
-                                    <input type="text">
+                                    <input id="login_email" type="text">
                                 </label>
                             </div>
                             <div class="default-form-box mb-20">
                                 <label>Passwords <span>*</span></label>
                                 <label>
-                                    <input type="password">
+                                    <input id="login_password" type="password">
                                 </label>
                             </div>
                             <div class="login_submit">
-                                <button class="mb-20" type="submit" value="login">login</button>
+                                <button type="button" onclick="sendMessageLogin(); return false;">login</button>
                                 <label class="checkbox-default mb-20" for="offer">
                                     <input type="checkbox" id="offer">
                                     <span>Remember me</span>
                                 </label>
                                 <a href="#">Lost your password?</a>
-
                             </div>
+                            <script>
+                                function sendMessageLogin() {
+                                    let email = document.getElementById("login_email").value;
+                                    let password = document.getElementById("login_password").value;
+                                    let xmlRequest = new XMLHttpRequest();
+                                    xmlRequest.onreadystatechange = function () {
+                                        if (this.readyState == 4) {
+                                            if (xmlRequest.status == 200) {
+                                                let myObject = JSON.parse(this.responseText);
+                                                sessionStorage.token = myObject.token;
+                                                alert('Login Successful\n' + this.responseText);
+                                                location.replace('/');
+                                            } else if (xmlRequest.status != 200) {
+                                                alert('Fail to Login\n' + this.responseText);
+                                            }
+                                            window.location.reload();
+                                        }
+                                    }
+                                    xmlRequest.open("POST", "/api/authenticate/")
+                                    xmlRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                                    xmlRequest.send(JSON.stringify({"email": email, "password": password}))
+                                }
+                            </script>
                         </form>
                     </div>
                 </div>
@@ -56,41 +78,50 @@
                             <div class="default-form-box mb-20">
                                 <label>Email address <span>*</span></label>
                                 <label>
-                                    <input type="text">
+                                    <input id="register_email" type="text">
                                 </label>
                             </div>
                             <div class="default-form-box mb-20">
                                 <label>Username<span>*</span></label>
                                 <label>
-                                    <input type="text">
+                                    <input id="register_username" type="text">
                                 </label>
                             </div>
                             <div class="default-form-box mb-20">
                                 <label>Passwords <span>*</span></label>
                                 <label>
-                                    <input type="password">
+                                    <input id="register_password" type="password">
                                 </label>
                             </div>
-                            <div class="register_submit">
-                                <button type="submit" value="register">Register</button>
+                            <div class="register_button">
+                                <button type="button" onclick="sendMessageRegister(); return false;">Register</button>
                             </div>
-{#                            <script>#}
-{#                                $email = $('#email').val();#}
-{#                                $username = $('#username').val();#}
-{#                                $password = $('#password').val();#}
-{#                                $('register_submit').click(function () {#}
-{#                                    $.ajax({#}
-{#                                        url: "http://127.0.0.1:8000/api/register/",#}
-{#                                        data: {email: $email, username: $username, password: $password},#}
-{#                                        success: function (response) {#}
-{#                                            if(response = "1"){#}
-{#                                                ok.html("Register Success")#}
-{#                                            }else{error.html("Email already exist")#}
-{#                                        }#}
-{#                                    }#}
-{#                                });#}
-{#                            </script>#}
-{#                                                      cái này đang fix nhé#}
+                            <script>
+                                function sendMessageRegister() {
+                                    let email = document.getElementById("register_email").value;
+                                    let username = document.getElementById("register_username").value;
+                                    let password = document.getElementById("register_password").value;
+                                    let xmlRequest = new XMLHttpRequest();
+                                    xmlRequest.onreadystatechange = function () {
+                                        if (this.readyState == 4) {
+                                            if (xmlRequest.status == 201) {
+                                                alert('Register Successful\n' + this.responseText);
+                                                location.replace('/');
+                                            } else if (xmlRequest.status != 201) {
+                                                alert('Fail to register\n' + this.responseText);
+                                            }
+                                            window.location.reload();
+                                        }
+                                    }
+                                    xmlRequest.open("POST", "/api/register/")
+                                    xmlRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                                    xmlRequest.send(JSON.stringify({
+                                        "email": email,
+                                        "username": username,
+                                        "password": password
+                                    }))
+                                }
+                            </script>
                         </form>
                     </div>
                 </div>

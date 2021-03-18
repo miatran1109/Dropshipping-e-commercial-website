@@ -1,4 +1,4 @@
-from .models import Account, Token
+from .models import Account, Order
 from rest_framework import serializers
 
 
@@ -10,20 +10,9 @@ class AccountRegisterSerializer(serializers.ModelSerializer):
         model = Account
         fields = ['email', 'username', 'password', 'salt']
 
-    def validate(self, attrs):
-        email = attrs.get('email', '')
-        username = attrs.get('username', '')
-
-        if not username.isalnum():
-            raise serializers.ValidationError('Username should only contain alphanumeric character')
-        return attrs
 
 
-class AccountLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField()
-
-class TokenSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Token
-        fields = ['user_id', 'token']
+        model = Order
+        fields = ['first_name','last_name','address','city','district','phone','email','note']

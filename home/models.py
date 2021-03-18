@@ -60,9 +60,21 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return ''
 
 class Token(models.Model):
-    userID = models.IntegerField(blank = False, max_length = 5000)
+    userID = models.IntegerField(blank = False)
     token = models.CharField(blank = False, max_length = 5000)
     created_at = models.DateTimeField(auto_now_add = True)
+
+
+class Order(models.Model):
+    first_name = models.CharField(blank = False, max_length = 5000)
+    last_name = models.CharField(blank = False, max_length = 5000)
+    address = models.CharField(blank = False, max_length = 5000)
+    city = models.CharField(blank = False, max_length = 5000)
+    district = models.CharField(blank = False, max_length = 5000)
+    phone = models.IntegerField(blank = False)
+    email = models.EmailField(blank = False, max_length = 5000)
+    note = models.CharField(blank = None, max_length = 10000)
+
 
 class ContactMessage(models.Model):
     name = models.CharField(blank=True, max_length=50)

@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
 from django.db.models.expressions import RawSQL
-from .serializers import AccountRegisterSerializer, AccountLoginSerializer
+from .serializers import AccountRegisterSerializer, OrderSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.db import connection
 from rest_framework_jwt.settings import api_settings
@@ -52,6 +52,23 @@ def checkout(request):
     category = Category.objects.all()
     context = {'category': category}
     return render(request, 'pages/checkout.html', context)
+
+
+def token_check(user_token):
+    # check = request.data
+    # user_id = check["userID"]
+    # user_token = check["token"]
+
+    check_obj = Token.objects.filter(
+        id__in=RawSQL('SELECT id FROM home_token WHERE token = %s', [user_token]))
+    check_value = check_obj.values()
+    check_token = check_value[0]['token']
+
+    if check_token == user_token:
+        return True
+    else:
+        return False
+
 
 
 def account(request):
@@ -157,8 +174,7 @@ class RegisterView(generics.GenericAPIView):
         user = request.data
         password = user["password"]
         salt = bcrypt.gensalt()  # Generate a salt for hashing password
-        hashed = bcrypt.hashpw(password.encode('utf8'),
-                               salt)  # Hash salt with password to save to DB so if someone access to the DB they can't see the user password
+        hashed = bcrypt.hashpw(password.encode('utf8'),salt)  # Hash salt with password to save to DB so if someone access to the DB they can't see user's password
         user["salt"] = salt.decode("utf8")
         user["password"] = hashed.decode("utf8")
 
@@ -166,12 +182,13 @@ class RegisterView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
+
         user_data = serializer.data
         del (user_data['salt'])
         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
-class UserLoginView(APIView):
+class UserLoginView(generics.GenericAPIView):
     def post(self, request):
         user_email = request.data['email']
         user_password = request.data['password']
@@ -191,12 +208,14 @@ class UserLoginView(APIView):
 
         if check_hashed == decode_hashed:
             random_string = get_random_string(length=20)
-            encoded_jwt = jwt.encode({"some": "payload"}, random_string, algorithm="HS256")
+            byte_jwt = jwt.encode({"some": "payload"}, random_string, algorithm="HS256")
+            encoded_jwt = byte_jwt.decode('utf8')
             try:
                 Token.objects.get(userID=user_id)
-                Token.objects.update(token=encoded_jwt, created_at=now)
+                Token.objects.filter(userID = user_id).update(token=encoded_jwt, created_at=now)
                 return Response({
                     'username': username,
+                    'userID' : user_id,
                     'email': user_email,
                     'token': encoded_jwt
                 }, status=status.HTTP_200_OK)
@@ -204,6 +223,7 @@ class UserLoginView(APIView):
                 Token.objects.create(userID=user_id, token=encoded_jwt)
                 return Response({
                     'username': username,
+                    'userID': user_id,
                     'email': user_email,
                     'token': encoded_jwt
                 }, status=status.HTTP_200_OK)
@@ -212,3 +232,20 @@ class UserLoginView(APIView):
              'error_message': 'Email or password is incorrect!',
              'error_code': 400
             }, status=status.HTTP_400_BAD_REQUEST)
+
+class CheckoutView(generics.GenericAPIView):
+    serializer_class = OrderSerializer
+
+    def post(self,request):
+        user_token = request.data['token']
+        check_token = token_check(user_token)
+        if check_token is True:
+            order = request.data
+
+            serializer = self.serializer_class(data=order)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            order_data = serializer.data
+            return Response(order_data, status=status.HTTP_201_CREATED)
+        else:
+            return  Response(status=status.HTTP_400_BAD_REQUEST)

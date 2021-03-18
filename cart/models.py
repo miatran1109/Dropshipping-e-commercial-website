@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
 from django.db import models
-from product.apps.ProductConfig.models import Product
-from home.apps.HomeConfig.models import User
+from product.models import Product
+from home.models import Account
 
 
 class Cart(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(Account, on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
