@@ -55,9 +55,6 @@ def checkout(request):
 
 
 def token_check(user_token):
-    # check = request.data
-    # user_id = check["userID"]
-    # user_token = check["token"]
 
     check_obj = Token.objects.filter(
         id__in=RawSQL('SELECT id FROM home_token WHERE token = %s', [user_token]))
@@ -153,18 +150,6 @@ def login(request):
     category = Category.objects.all()
     context = {'category': category}
     return render(request, 'pages/login.html', context)
-
-
-# def auth_view(request):
-#     username = request.POST.get('username', context)
-#     password = request.POST.get('password', context)
-#     user = auth.authenticate(username = username, password = password)
-#
-#     if user is not None:
-#         auth.login(request,user)
-#         return HttpResponseRedirect('/loggedin')
-#     else:
-#         return HttpResponseRedirect('/invalid')
 
 
 class RegisterView(generics.GenericAPIView):

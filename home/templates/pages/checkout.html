@@ -85,7 +85,7 @@
                                 <div class="col-12 mb-20">
                                     <div class="default-form-box">
                                         <label>Company Name</label>
-                                        <input type="text">
+                                        <input id="company" type="text">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-20">
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="col-12 mb-20">
                                     <div class="default-form-box">
-                                        <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
+                                        <input id="address_op" placeholder="Apartment, suite, unit etc. (optional)" type="text">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-20">
@@ -231,16 +231,20 @@
                                     let district = document.getElementById("district").value;
                                     let phone = document.getElementById("phone").value;
                                     let order_email = document.getElementById("order_email").value;
+                                    let company = document.getElementById("company").value;
+                                    let address_op = document.getElementById("address_op").value;
                                     let note = document.getElementById("order_note").value;
                                     let check_token = sessionStorage.token;
                                     let xmlRequest = new XMLHttpRequest();
                                     xmlRequest.onreadystatechange = function () {
                                         if (this.readyState == 4) {
                                             if (xmlRequest.status == 201) {
-                                                alert('Thanks for your order!\n');
+                                                alert('Thanks for your order!\n'
+                                                    +first_name+' '+last_name+'\n'+address+', '+district+', '+city+'\n'
+                                                    +phone+'\n'+order_email);
                                                 location.replace('/');
                                             } else if (xmlRequest.status != 201) {
-                                                alert('Sorry something gone wrong :(\n');
+                                                alert('Sorry something gone wrong :(\n' + this.responseText);
                                             }
                                             window.location.reload();
                                         }
@@ -257,6 +261,8 @@
                                         "phone": phone,
                                         "email": order_email,
                                         "note": note,
+                                        "address_op":address_op,
+                                        "company":company,
                                     }))
                                 }
                             </script>

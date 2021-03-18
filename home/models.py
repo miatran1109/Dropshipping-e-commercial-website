@@ -73,7 +73,9 @@ class Order(models.Model):
     district = models.CharField(blank = False, max_length = 5000)
     phone = models.IntegerField(blank = False)
     email = models.EmailField(blank = False, max_length = 5000)
-    note = models.CharField(blank = None, max_length = 10000)
+    note = models.CharField(blank = True, max_length = 10000)
+    address_op = models.CharField(blank = True, max_length = 5000)
+    company = models.CharField(blank = True, max_length = 5000)
 
 
 class ContactMessage(models.Model):

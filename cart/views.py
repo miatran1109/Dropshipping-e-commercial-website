@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.views.decorators.http import require_POST
-from product.apps.ProductConfig.models import Product
+from product.models import Product
 from .models import Cart, CartItem
 # from .forms import CartAddProductForm
 from django.contrib.auth.decorators import login_required
