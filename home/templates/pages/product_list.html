@@ -190,7 +190,7 @@
                                                         </div>
                                                          <div class="product-default-content">
                                                             <h6 class="product-default-link"><a href="{% url 'product_detail' product.id product.slug %}">{{ product.title }}</a></h6>
-                                                            <span class="product-default-price">${{product.price|floatformat:2}}</span>
+                                                            <span class="product-default-price">{{product.price|floatformat:2}}₫</span>
                                                         </div>
                                                     </div>
                                                 {% endfor %}

@@ -53,7 +53,7 @@
                                 </div>
                                 <a href="#review" class="customer-review">( {{ product.average_review | stringformat:".2f"}} / {{ product.countreview }} review(s) )</a>
                             </div>
-                            <div class="price">${{product.price}}</div>
+                            <div class="price">{{product.price}}₫</div>
                            <p>{{ product.description }}</p>
                         </div> <!-- End  Product Details Text Area-->
                         <!-- Start Product Variable Area -->
@@ -338,7 +338,7 @@
                                 </div>
                                 <div class="product-default-content">
                                     <h6 class="product-default-link"><a href="{% url 'product_detail'  product.id product.slug %}">{{product.title}}</a></h6>
-                                    <span class="product-default-price">{{product.price}}</span>
+                                    <span class="product-default-price">{{product.price}}₫</span>
                                 </div>
                             </div> <!-- End Product Defautlt Single -->
                     </div>
@@ -380,7 +380,7 @@
                                 </div>
                                 <div class="product-default-content">
                                     <h6 class="product-default-link"><a href="{% url 'product_detail'  product.id product.slug %}">{{product.name}}</a></h6>
-                                    <span class="product-default-price">{{product.price}}</span>
+                                    <span class="product-default-price">{{product.price}}₫</span>
                                 </div>
                             </div> <!-- End Product Defautlt Single -->
                         </div>

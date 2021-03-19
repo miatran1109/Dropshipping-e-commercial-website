@@ -1,4 +1,4 @@
-#from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.conf import settings
@@ -9,6 +9,9 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+from django.core.files import File
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
 
 
 class ProductFromShopee(models.Model):
@@ -16,21 +19,42 @@ class ProductFromShopee(models.Model):
     title = models.TextField(max_length=255)
     supplier = models.TextField(max_length=255)
     img_urls = ArrayField(models.ImageField(blank=True, upload_to='images/'), blank=True)
-    variants = ArrayField(models.CharField(max_length=200), blank=True)
+    variants = ArrayField(models.TextField(), blank=True)
+    variant_type = models.TextField()
     description = models.TextField(max_length=255)
     brand = models.TextField(max_length=255)
-    categories = ArrayField(models.CharField(max_length=200), blank=True)
+    categories = ArrayField(models.TextField(), blank=True)
     price = models.TextField(max_length=255)
+    price_not_sale = models.TextField(max_length=255)
 
     def __str__(self):
         return self.title
+
+    # add category
+    def single_cat(self):
+        obj = self.objects.values_list('categories')  # all categories
+        for cat_list in obj:  # (['Shopee', 'Thời Trang Nam', 'Áo thun', 'Áo ngắn tay không cổ'],)
+            for cat in cat_list:  # ['Shopee', 'Thời Trang Nam', 'Áo thun', 'Áo ngắn tay không cổ']
+                for i in range(1, len(cat)):  # 'Thời Trang Nam'
+                    c1 = Category()
+                    c1.title = cat[i]
+                    c1.slug = cat[i]
+                    c1.description = cat[i]
+                    # first category is not parent
+                    if i == 1:
+                        c1.parent = None
+                    # the next one is child of previous
+                    else:
+                        c1.parent_id = Category.objects.get(title=cat[i - 1]).id
+                    # if not already in, save
+                    if not Category.objects.filter(slug=cat[i]).exists():
+                        c1.save()
 
 
 class Category(MPTTModel):
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.TextField(max_length=255)
-    image = models.ImageField(blank=True, upload_to='images/')
     slug = models.SlugField(null=False, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
@@ -51,33 +75,28 @@ class Category(MPTTModel):
 
 
 class Product(models.Model):
-    VARIANTS = (
-        ('None', 'None'),
-        ('Size', 'Size'),
-        ('Color', 'Color'),
-        ('Size-Color', 'Size-Color'),
-    )
+    # VARIANTS = (
+    #     ('None', 'None'),
+    #     ('Size', 'Size'),
+    #     ('Color', 'Color'),
+    #     ('Size-Color', 'Size-Color'),
+    # )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  # many to one relation with Category
-    title = models.CharField(max_length=150)
-    description = models.TextField(max_length=255)
-    image = models.ImageField(upload_to='images/', null=False)
-    price = models.FloatField()
+    title = models.TextField(max_length=255)
+    description = models.TextField()
+    src_url = models.URLField()
+    image = models.ImageField(upload_to='images/', null=False, max_length=500)
+    img_url = models.URLField()
+    price = models.TextField()
     amount = models.IntegerField(default=0)
     minamount = models.IntegerField(default=3)
-    variant = models.CharField(max_length=10, choices=VARIANTS, default='None')
-    slug = models.SlugField(null=False, unique=True)
+    variant = models.TextField(default='None')
+    slug = models.SlugField(max_length=500, null=False, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
-
-    # method to create a fake table field in read only mode
-    def image_tag(self):
-        if self.image.url is not None:
-            return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
-        else:
-            return ""
 
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
@@ -96,14 +115,31 @@ class Product(models.Model):
             cnt = int(reviews["count"])
         return cnt
 
+    def get_remote_image(self):
+        if self.img_url and not self.image:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.img_url).read())
+            img_temp.flush()
+            self.image.save(f"image_{self.pk}", File(img_temp))
+        self.save()
+
 
 class Images(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='images/',  max_length=500)
+    img_url = models.URLField()
 
     def __str__(self):
         return self.title
+
+    def get_remote_image(self):
+        if self.img_url and not self.image:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.img_url).read())
+            img_temp.flush()
+            self.image.save(f"image_{self.pk}", File(img_temp))
+        self.save()
 
 
 class Comment(models.Model):
@@ -126,37 +162,37 @@ class CommentForm(ModelForm):
         fields = {'subject', 'comment', 'rate'}
 
 
-
-class Color(models.Model):
-    name = models.CharField(max_length=20)
-    code = models.CharField(max_length=10, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-    def color_tag(self):
-        if self.code is not None:
-            return mark_safe('<p style="background-color:{}">Color </p>'.format(self.code))
-        else:
-            return ""
-
-
-class Size(models.Model):
-    name = models.CharField(max_length=20)
-    code = models.CharField(max_length=10, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
+# class Color(models.Model):
+#     name = models.CharField(max_length=20)
+#     code = models.CharField(max_length=10, blank=True, null=True)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     def color_tag(self):
+#         if self.code is not None:
+#             return mark_safe('<p style="background-color:{}">Color </p>'.format(self.code))
+#         else:
+#             return ""
+#
+#
+# class Size(models.Model):
+#     name = models.CharField(max_length=20)
+#     code = models.CharField(max_length=10, blank=True, null=True)
+#
+#     def __str__(self):
+#         return self.name
 
 
 class Variants(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    image_id = models.IntegerField(blank=True, null=True, default=0)
-    quantity = models.IntegerField(default=1)
-    price = models.FloatField()
+
+    # color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
+    # size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
+    # image_id = models.IntegerField(blank=True, null=True, default=0)
+    # quantity = models.IntegerField(default=1)
+    # price = models.FloatField()
 
     def __str__(self):
         return self.title
@@ -168,13 +204,6 @@ class Variants(models.Model):
         else:
             varimage = ""
         return varimage
-
-    def image_tag(self):
-        img = Images.objects.get(id=self.image_id)
-        if img.id is not None:
-            return mark_safe('<img src="{}" height="50"/>'.format(img.image.url))
-        else:
-            return ""
 
 
 class Slider(models.Model):

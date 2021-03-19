@@ -127,7 +127,7 @@ def policy(request):
 def product_list(request):
     category = Category.objects.all()
     products = Product.objects.all()
-    paginator = Paginator(products, 2)
+    paginator = Paginator(products, 12)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
     context = {'page_obj': page_obj, 'category': category}
